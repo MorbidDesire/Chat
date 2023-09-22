@@ -4,12 +4,15 @@
   "description": "[![Actions Status](https://github.com/MorbidDesire/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/MorbidDesire/frontend-project-12/actions)",
   "main": "/frontend/src/index.js",
   "scripts": {
+    "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm ci"
   },
   "author": "Alexander Grechin",
   "license": "ISC",
   "dependencies": {
+    "@fastify/static": "^6.11.2",
     "@hexlet/chat-server": "^1.1.8"
   }
 }
