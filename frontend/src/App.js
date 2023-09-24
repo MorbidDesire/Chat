@@ -18,7 +18,7 @@ const App = () => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        Learn React and Alex is the Best!
+        Learn React and Alex is the Worst!
       </a>
     </header>
   </div>
