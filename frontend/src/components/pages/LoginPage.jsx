@@ -1,26 +1,27 @@
+/* eslint-disable */
 import {
-  useFormik, Formik, Field, ErrorMessage,
+  useFormik, Formik, Field,
 } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 import Navigation from './Navigation';
 import avatar from './avatar.json';
 
-const ErrorComponent = ({ error }) => {
-  console.log(error);
-  return (
-    <ErrorMessage
-      component="div"
-      name="password"
-      className="invalid-tooltip"
-    />
-  );
-};
+// const ErrorComponent = ({ error }) => {
+//   console.log(error);
+//   return (
+//     <ErrorMessage
+//       component="div"
+//       name="password"
+//       className="invalid-tooltip"
+//     />
+//   );
+// };
 
-const SignupForm = () => {
-  const SignupSchema = Yup.object({
-    username: Yup.string().required('Неверные имя пользователя или пароль').min(2, 'Минимум 2 буквы'),
-    password: Yup.string().required('Неверные имя пользователя или пароль'),
+const SignupForm = () => {  
+  const SignupSchema = yup.object({
+    username: yup.string().required('Неверные имя пользователя или пароль'),
+    password: yup.string().required('Неверные имя пользователя или пароль'),
   });
 
   const formik = useFormik({
@@ -29,24 +30,50 @@ const SignupForm = () => {
       password: '',
     },
     onSubmit: (values) => {
-      SignupSchema.validate(formik.values)
-        .then(() => {
-          console.log(JSON.stringify(values, null, 2));
-          formik.errors = {};
-          console.log(Object.keys(formik.errors).length);
-        })
-        .catch(({ message, path }) => {
-          formik.errors = { [path]: message };
-          console.log(Object.keys(formik.errors).length !== 0, formik.touched.username);
-        });
+      console.log(values)
+      // SignupSchema.validate(formik.values)
+      //   .then(() => {
+      //     console.log(JSON.stringify(values, null, 2));
+      //     formik.errors = {};
+      //     console.log(Object.keys(formik.errors).length);
+      //   })
+      //   .catch(({ message, path }) => {
+      //     formik.errors = { [path]: message };
+      //     console.log(Object.keys(formik.errors).length !== 0, formik.touched.username);
+      //   });
     },
   });
-
   return (
     <Formik
+      initialValues={{
+        username: '',
+        password: '',
+      }}
+      onSubmit={formik.handleSubmit}
       validationSchema={SignupSchema}
     >
-      <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+      {(formik) => {
+        const { errors, touched } = formik;
+        return (
+        <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+          <h1 className="text-center mb-4">Войти</h1>
+          <Form.Group className="form-floating mb-3" controlId="username">
+            <Field name="username" required onChange={formik.handleChange} placeholder="Ваш ник" value={formik.values.username} className={`form-control ${touched.username && errors.username ? "is-invalid" : ""}`} />
+            <Form.Label>Ваш ник</Form.Label>
+          </Form.Group>
+          <Form.Group className="form-floating mb-4" controlId="password">
+            <Field name="password" required onChange={formik.handleChange} placeholder="Пароль" value={formik.values.password} className={`form-control ${touched.password && errors.password ? "is-invalid" : ""}`}/>
+            <Form.Label>Пароль</Form.Label>
+            {errors.password || errors.username ? (
+              <div className='invalid-tooltip' style={{display: 'block'}}>Неверные имя пользователя или пароль</div>
+            ) : null}
+          </Form.Group>
+          <Button variant="outline-primary" type="submit" className="w-100 mb-3">
+            Войти
+          </Button>
+        </Form>
+      )}}
+      {/* <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
         <h1 className="text-center mb-4">Войти</h1>
         <Form.Group className="form-floating mb-3" controlId="username">
           <Field name="username" required type="text" placeholder="Ваш ник" id="username" onChange={formik.handleChange} value={formik.values.username} className={`form-control ${Object.keys(formik.errors).length !== 0 && formik.touched.username ? 'is-invalid' : ''}`} />
@@ -60,7 +87,7 @@ const SignupForm = () => {
         <Button variant="outline-primary" type="submit" className="w-100 mb-3">
           Войти
         </Button>
-      </Form>
+      </Form> */}
     </Formik>
   );
 };
