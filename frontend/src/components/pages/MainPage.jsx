@@ -1,7 +1,8 @@
 import { loremIpsum } from 'lorem-ipsum';
+// import { useNavigate } from 'react-router-dom';
 import Navigation from './Navigation';
 
-const BuildPage = (index) => (
+const MainPage = (index) => (
   <>
     <Navigation />
     <h3>Page {index}</h3>
@@ -11,4 +12,4 @@ const BuildPage = (index) => (
   </>
 );
 
-export default () => BuildPage(1);
+export default MainPage;

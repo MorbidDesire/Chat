@@ -1,9 +1,11 @@
 /* eslint-disable */
 import {
-  useFormik, Formik, Field,
+  Formik, Field,
 } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import * as yup from 'yup';
+import axios from 'axios';
 import Navigation from './Navigation';
 import avatar from './avatar.json';
 
@@ -18,39 +20,55 @@ import avatar from './avatar.json';
 //   );
 // };
 
+
+
 const SignupForm = () => {  
+  const navigate = useNavigate();
   const SignupSchema = yup.object({
     username: yup.string().required('Неверные имя пользователя или пароль'),
     password: yup.string().required('Неверные имя пользователя или пароль'),
   });
 
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    onSubmit: (values) => {
-      console.log(values)
-      // SignupSchema.validate(formik.values)
-      //   .then(() => {
-      //     console.log(JSON.stringify(values, null, 2));
-      //     formik.errors = {};
-      //     console.log(Object.keys(formik.errors).length);
-      //   })
-      //   .catch(({ message, path }) => {
-      //     formik.errors = { [path]: message };
-      //     console.log(Object.keys(formik.errors).length !== 0, formik.touched.username);
-      //   });
-    },
-  });
+const submitForm = (values) => {
+  axios.post('api/v1/login', values)
+  .then((response) => {
+    console.log(response);
+    window.localStorage.token = response.data.token;
+    navigate('/', { replace: false })
+  })
+  .catch((error) => console.log(error));
+}
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     username: '',
+  //     password: '',
+  //   },
+  //   validationSchema: SignupSchema,
+  //   onSubmit: (values) => {
+  //     console.log(values)
+  //     SignupSchema.validate(formik.values)
+  //       .then(() => {
+  //         console.log(JSON.stringify(values, null, 2));
+  //         formik.errors = {};
+  //         console.log(Object.keys(formik.errors).length);
+  //       })
+  //       .catch(({ message, path }) => {
+  //         formik.errors = { [path]: message };
+  //         console.log(Object.keys(formik.errors).length !== 0, formik.touched.username);
+  //       });
+  //   },
+  // });
   return (
     <Formik
       initialValues={{
         username: '',
         password: '',
-      }}
-      onSubmit={formik.handleSubmit}
+      }} 
       validationSchema={SignupSchema}
+      onSubmit={(values) => {
+        submitForm(values)
+      }}
     >
       {(formik) => {
         const { errors, touched } = formik;
@@ -64,7 +82,7 @@ const SignupForm = () => {
           <Form.Group className="form-floating mb-4" controlId="password">
             <Field name="password" required onChange={formik.handleChange} placeholder="Пароль" value={formik.values.password} className={`form-control ${touched.password && errors.password ? "is-invalid" : ""}`}/>
             <Form.Label>Пароль</Form.Label>
-            {errors.password || errors.username ? (
+            {(errors.password || errors.username) && (touched.username && touched.password) ? (
               <div className='invalid-tooltip' style={{display: 'block'}}>Неверные имя пользователя или пароль</div>
             ) : null}
           </Form.Group>
