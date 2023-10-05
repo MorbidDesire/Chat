@@ -1,14 +1,14 @@
 /* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAuth } from "@reactivers/use-auth";
+import { useAuth } from "../useAuth";
 import { useTranslation } from 'react-i18next';
 import Navigation from './Navigation';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  let { token } = useAuth();
-  token = window.localStorage.user;
+  const { token } = useAuth();
+  console.log(token);
   // useEffect(() => {
   //   setToken(window.localStorage.user);
   // }, []);

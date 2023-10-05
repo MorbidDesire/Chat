@@ -1,7 +1,10 @@
 export default {
   translation: {
     loginPage: {
-      error: 'Неверные имя пользователя или пароль',
+      errors: {
+        networkError: 'Ошибка сети',
+        authError: 'Неверные имя пользователя или пароль',
+      },
       username: 'Ваш ник',
       password: 'Пароль',
       enter: 'Войти',
