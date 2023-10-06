@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { LocalStorageProvider } from "@reactivers/use-local-storage";
 import React from 'react';
 import { useAuth } from './useAuth'
+import Navigation from './Navigation';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import EmptyPage from './pages/EmptyPage';
@@ -25,6 +26,7 @@ const App = () => {
   return (  
     <AuthProvider>
       <div className="d-flex flex-column h-100">
+        <Navigation />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />} />

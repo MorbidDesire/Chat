@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
-import Navigation from './Navigation';
 import avatar from './avatar.json';
 
 const SignupForm = () => {
@@ -32,6 +31,7 @@ const SignupForm = () => {
   const submitForm = async (values) => {
     await axios.post('api/v1/login', values)
     .then(({ data }) => {
+      localStorage.setItem('userId', data.username);
       localStorage.setItem('token', data.token);
       navigate('/', { replace: false })
     })
@@ -110,7 +110,6 @@ const Container = () => {
 
 const LoginPage = () => (
   <>
-    <Navigation />
     <Container />
   </>
 );
