@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
+import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
 import { setChannels, addChannel } from '../../slices/channelsSlice';
@@ -11,6 +12,7 @@ import Channels from './Channels';
 import Messages from './Messages';
 import axios from 'axios';
 
+
 const MainPage = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
@@ -19,9 +21,7 @@ const MainPage = () => {
   const getNormalized = (data) => {
     const channel = new schema.Entity('channels');
 
-    const message = new schema.Entity('messages', {
-      channel
-    });
+    const message = new schema.Entity('messages');
 
     const normalizedChannels = normalize(data.channels, [channel]);
     const normalizedMessages = normalize(data.messages, [message]);
@@ -48,16 +48,11 @@ const MainPage = () => {
     const currentChannel = Object.values(channels).find(({id}) => id === currentChannelId);
     // const user = state.users.find(({ id }) => id === req.user.userId);
 
-    // const entries = Object.entries(channels).map(([, value]) => {
-    //   value.active = value.id === currentChannelId;
-    //   return value;
-    // });
-    // const sortedChannels = {...entries};
-    const { messages }  = normalizedMessages.entities;
+    const messages = !Object.keys(normalizedMessages.entities).length ? {} : normalizedMessages.entities.messages;
   
     dispatch(setChannels({ entities: channels, ids: Object.keys(channels) }));
     dispatch(setCurrentChannel({ entities: currentChannel, id: currentChannel.id  }))
-    // dispatch(setMessages({ entities: messages, ids: Object.keys(messages) }));
+    dispatch(setMessages({ entities: messages, ids: Object.keys(messages) }));
     }
     fetchData();  
   }, []);

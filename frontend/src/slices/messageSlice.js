@@ -16,8 +16,9 @@ const messageSlice = createSlice({
       state.ids = ids;
     },
     addMessage: (state, { payload }) => {
-      const { text, author, id } = payload;
-      console.log(text, author, id)
+      const { id } = payload;
+      state.entities[id] = payload;
+      state.ids.push(id.toString());
     },
   },
 });

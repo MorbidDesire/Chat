@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
-import avatar from './avatar.json';
+import avatar from '../../assets/avatar.json'
 
-const SignupForm = () => {
+const AuthForm = () => {
   const { t } = useTranslation('translation');
   const navigate = useNavigate();
   const SignupSchema = yup.object({
@@ -93,12 +93,12 @@ const Container = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img src={avatar} className="rounded-circle" alt="Войти" />
               </div>
-              <SignupForm />
+              <AuthForm />
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
                 <span>{t('loginPage.noAcc')} </span>
-                <a href="/signup">{t('loginPage.reg')}</a>
+                <a href='/signup'>{t('loginPage.reg')}</a>
               </div>
             </div>
           </div>

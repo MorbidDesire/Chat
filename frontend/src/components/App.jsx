@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import EmptyPage from './pages/EmptyPage';
+import SignupPage from './pages/SignupPage';
 
 const AuthProvider = ({ children }) => {
   const auth = useAuth();
@@ -32,6 +33,7 @@ const App = () => {
             <Route path="/" element={<MainPage />} />
             <Route path="*" element={<EmptyPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
           </Routes>
         </BrowserRouter>
       </div>
