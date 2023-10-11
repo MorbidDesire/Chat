@@ -13,7 +13,7 @@ const SignupPage = () => {
     password: Yup.string()
       .min(6, 'Не менее 6 символов')
       .required('Обязательное поле'),
-      confirmPassword: Yup.string()
+    confirmPassword: Yup.string()
       .required('Обязательное поле')
       .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
   });

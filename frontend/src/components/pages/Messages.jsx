@@ -2,23 +2,23 @@
 import { useTranslation } from 'react-i18next';
 import { io } from 'socket.io-client';
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { addMessage } from '../../slices/messageSlice';
 import { useAuth } from "../useAuth";
 
 const socket = io('http://localhost:3000');
 
-const MessageBox = ({ messages }) => {
+const MessageBox = ({channelMessages}) => {
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-      {messages.map(({ author, text, id }) => (
+      {channelMessages.map(({ author, text, id }) => (
         <div key={id} className="text-break mb-2"><b>{author}</b>: {text}</div>
       ))}
     </div>
   )
 };
 
-const MessageForm = () => {
+const MessageForm = ({ currentChannel }) => {
   const [text, setText] = useState('');
   const inputEl = useRef(null);
   const dispatch = useDispatch();
@@ -28,12 +28,13 @@ const MessageForm = () => {
     setText(target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     inputEl.current.setAttribute('disabled', true);
     const post = {
       text,
       author: userId,
+      channelId: currentChannel.id,
       id: Number(_.uniqueId()),
     };
     socket.timeout(5000).emit('newMessage', post, (err, response) => {
@@ -67,23 +68,23 @@ const MessageForm = () => {
   );
 }
 
-
-
 const Messages = () => {
   const { t } = useTranslation('translation');
-  const currentChannelName = useSelector((state) => state.currentChannelReducer.entities.name)
-  const messages = useSelector((state) => Object.values(state.messageReducer.entities));
-  const count = messages.length;
+  const currentChannel = useSelector((state) => state.currentChannelReducer.entities, shallowEqual);
+  const messages = useSelector((state) => Object.values(state.messageReducer.entities), shallowEqual);
+  const channelMessages = messages.filter(({channelId}) => channelId === currentChannel.id);
+
+  const count = channelMessages.length;
 
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0"><b># {currentChannelName}</b></p>
+          <p className="m-0"><b># {currentChannel.name}</b></p>
           <span className="text-muted">{t('mainPage.messages.counter.count', {count})}</span>
         </div>
-        {messages && <MessageBox messages={messages} />}
-        <MessageForm />
+        {channelMessages && <MessageBox channelMessages={channelMessages} />}
+        <MessageForm currentChannel={currentChannel} />
       </div>
     </div>
   );

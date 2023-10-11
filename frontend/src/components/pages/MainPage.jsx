@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
@@ -11,7 +11,6 @@ import { useAuth } from "../useAuth";
 import Channels from './Channels';
 import Messages from './Messages';
 import axios from 'axios';
-
 
 const MainPage = () => {
   const navigate = useNavigate();
