@@ -5,7 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { AuthProvider } from "@reactivers/use-auth";
 // import { LocalStorageProvider } from "@reactivers/use-local-storage";
 import React from 'react';
-import { useAuth } from './useAuth'
+import { io } from 'socket.io-client';
+import { useAuth } from './useAuth';
 import Navigation from './Navigation';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
@@ -21,7 +22,7 @@ const AuthProvider = ({ children }) => {
       { children }
     </AuthContext.Provider>
   );
-}
+};
 
 const App = () => {
   return (  

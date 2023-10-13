@@ -1,12 +1,10 @@
 /* eslint-disable */
 import { useTranslation } from 'react-i18next';
-import { io } from 'socket.io-client';
-import React, { useEffect, useRef, useState } from 'react';
+// import { io } from 'socket.io-client';
+import React, { useRef, useState, useCallback, useContext } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { addMessage } from '../../slices/messageSlice';
 import { useAuth } from "../useAuth";
-
-const socket = io('http://localhost:3000');
+import { socket } from '../../index'
 
 const MessageBox = ({channelMessages}) => {
   return (
@@ -21,8 +19,13 @@ const MessageBox = ({channelMessages}) => {
 const MessageForm = ({ currentChannel }) => {
   const [text, setText] = useState('');
   const inputEl = useRef(null);
-  const dispatch = useDispatch();
   const { userId } = useAuth();
+
+  const messageInput = useCallback((inputElement) => {
+    if (inputElement) {
+      inputElement.focus();
+    }
+  }, [currentChannel]);
 
   const handleChange = ({ target }) => {
     setText(target.value);
@@ -30,7 +33,9 @@ const MessageForm = ({ currentChannel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    inputEl.current.setAttribute('disabled', true);
+    // console.log(messageInput)
+    // Блок кнопки
+    // inputEl.current.setAttribute('disabled', true);
     const post = {
       text,
       author: userId,
@@ -42,12 +47,13 @@ const MessageForm = ({ currentChannel }) => {
         // Вывести сообщение об ошибке
         console.log('Timeout Error')
       } else {
-        inputEl.current.removeAttribute('disabled');
+        // Анблок кнопки
+        // inputEl.current.removeAttribute('disabled');
       }
     });
-    socket.on('newMessage', (message) => {
-      dispatch(addMessage(message));
-    });
+    // socket.on('newMessage', (message) => {
+    //   dispatch(addMessage(message));
+    // });
     setText('');
   }
 
@@ -55,7 +61,7 @@ const MessageForm = ({ currentChannel }) => {
     <div className="mt-auto px-5 py-3">
     <form noValidate className="py-1 border rounded-2" onSubmit={handleSubmit}>
       <div className="input-group has-validation">
-        <input name="body" ref={inputEl} aria-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" value={text} onChange={handleChange} />
+        <input name="body" ref={messageInput} aria-label="Новое сообщение" placeholder="Введите сообщение..." className="border-0 p-0 ps-2 form-control" value={text} onChange={handleChange} />
         <button type="submit" disabled={text.trim() === ''}  className="btn btn-group-vertical">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
             <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
@@ -73,7 +79,6 @@ const Messages = () => {
   const currentChannel = useSelector((state) => state.currentChannelReducer.entities, shallowEqual);
   const messages = useSelector((state) => Object.values(state.messageReducer.entities), shallowEqual);
   const channelMessages = messages.filter(({channelId}) => channelId === currentChannel.id);
-
   const count = channelMessages.length;
 
   return (
@@ -83,7 +88,7 @@ const Messages = () => {
           <p className="m-0"><b># {currentChannel.name}</b></p>
           <span className="text-muted">{t('mainPage.messages.counter.count', {count})}</span>
         </div>
-        {channelMessages && <MessageBox channelMessages={channelMessages} />}
+        {channelMessages.length !== 0 && <MessageBox channelMessages={channelMessages} />}
         <MessageForm currentChannel={currentChannel} />
       </div>
     </div>

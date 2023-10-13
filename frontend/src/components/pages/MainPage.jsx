@@ -50,7 +50,7 @@ const MainPage = () => {
     const messages = !Object.keys(normalizedMessages.entities).length ? {} : normalizedMessages.entities.messages;
   
     dispatch(setChannels({ entities: channels, ids: Object.keys(channels) }));
-    dispatch(setCurrentChannel({ entities: currentChannel, id: currentChannel.id  }))
+    dispatch(setCurrentChannel({ entities: currentChannel, ids: currentChannel.id  }))
     dispatch(setMessages({ entities: messages, ids: Object.keys(messages) }));
     }
     fetchData();  

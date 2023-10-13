@@ -7,6 +7,6 @@ export const useAuth = () => {
 
   return {
     token,
-    userId
+    userId,
   };
 };
