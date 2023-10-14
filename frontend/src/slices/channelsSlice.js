@@ -1,4 +1,5 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+/* eslint-disable */
+import { createSlice, createEntityAdapter, current } from '@reduxjs/toolkit';
 
 const channelsAdapter = createEntityAdapter();
 
@@ -13,10 +14,23 @@ const channelsSlice = createSlice({
       state.entities = entities;
       state.ids = ids;
     },
-    addChannel: channelsAdapter.addOne,
+    addChannel: (state, { payload }) => {
+      const { id } = payload;
+      state.entities[id] = payload;
+      state.ids.push(id.toString())
+    }, 
+    renameChannel: (state, { payload }) => {
+      const { name, id } = payload;
+      state.entities[id].name = name;
+    },
+    removeChannel: (state, { payload }) => {
+      const id = payload.id.toString();
+      delete state.entities[id];
+      state.ids = state.ids.filter((i) => i !== id)
+    }
   },
 });
 
-export const { setChannels, addChannel } = channelsSlice.actions;
+export const { setChannels, addChannel, renameChannel, removeChannel } = channelsSlice.actions;
 export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channelsReducer);
 export default channelsSlice.reducer;

@@ -6,21 +6,25 @@ import { io } from 'socket.io-client';
 import store from './slices/index.js';
 import init from './init.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from './slices/messageSlice.js'
-import { addChannel } from './slices/channelsSlice.js';
+import { addChannel, renameChannel, removeChannel, channelsSelectors } from './slices/channelsSlice.js';
 
 export const socket = io('http://localhost:3000');
 
 const Socket = () => {
   const dispatch = useDispatch();
   socket.on('newMessage', (message) => {
-    console.log('new message');
     dispatch(addMessage(message));
   });
   socket.on('newChannel', (channel) => {
-    console.log('new channel')
-    dispatch(addChannel(channel))
+    dispatch(addChannel(channel));
+  });
+  socket.on('renameChannel', (channel) => {
+    dispatch(renameChannel(channel));
+  });
+  socket.on('removeChannel', (data) => {
+    dispatch(removeChannel(data));
   });
 };
 

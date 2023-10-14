@@ -1,5 +1,6 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import { addChannel } from './channelsSlice';
+/* eslint-disable */
+import { createSlice, createEntityAdapter, current } from '@reduxjs/toolkit';
+import { addChannel, removeChannel } from './channelsSlice';
 
 const currentChannelAdapter = createEntityAdapter();
 
@@ -24,10 +25,13 @@ const currentChannelSlice = createSlice({
       .addCase(addChannel, (state, { payload }) => {
         state.entities = payload;
         state.ids = payload.id;
+      })
+      .addCase(removeChannel, (state, { payload }) => {
+        const defaultChannel = { name: 'general', id: 1, removable: false};
+        state.entities = defaultChannel;
+        state.ids = 1;
+        // const defaultChannel = state.entities.find(city => city.name === searchTerm).id
       });
-    // .addCase(removeChannel, (state, { payload }) => {
-    //   const defaultChannel = state.entities.find(city => city.name === searchTerm).id
-    // });
   },
 });
 

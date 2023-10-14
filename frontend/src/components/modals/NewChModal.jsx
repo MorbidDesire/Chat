@@ -2,10 +2,16 @@
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
+import React, { useCallback } from 'react';
 import { useFormik } from 'formik';
 import { socket } from '../../index';
 
 const NewChannelModal = (props) => {
+  const inputEl = useCallback((inputElement) => {
+    if (inputElement) {
+      inputElement.select();
+    }
+  }, []);
   const channelSchema = yup.object({
     name: yup.string()
       .required('Обязательное поле')
@@ -24,6 +30,7 @@ const NewChannelModal = (props) => {
           // Вывести сообщение об ошибке
           console.log('Timeout Error');
         } else {
+          formik.setValues({name: ''}, false)
           props.onHide();
           // Анблок кнопки
           // inputEl.current.removeAttribute('disabled');
@@ -48,7 +55,7 @@ const NewChannelModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <input name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.newChannel} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
+          <input name="name" ref={inputEl} id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
           <label className="visually-hidden" htmlFor="name">Добавить канал</label>
           {errors && touched.name
             ? <div className="invalid-feedback">{errors.name}</div>

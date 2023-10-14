@@ -1,10 +1,12 @@
 /* eslint-disable */
 import { useTranslation } from 'react-i18next';
-// import { io } from 'socket.io-client';
-import React, { useRef, useState, useCallback, useContext } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
+import _ from 'lodash';
 import { useAuth } from "../useAuth";
 import { socket } from '../../index'
+import { currentChannelSelectors } from '../../slices/currentChannelSlice';
+import { channelsSelectors } from '../../slices/channelsSlice';
 
 const MessageBox = ({channelMessages}) => {
   return (
@@ -18,7 +20,7 @@ const MessageBox = ({channelMessages}) => {
 
 const MessageForm = ({ currentChannel }) => {
   const [text, setText] = useState('');
-  const inputEl = useRef(null);
+  // const inputEl = useRef(null);
   const { userId } = useAuth();
 
   const messageInput = useCallback((inputElement) => {
@@ -76,19 +78,22 @@ const MessageForm = ({ currentChannel }) => {
 
 const Messages = () => {
   const { t } = useTranslation('translation');
-  const currentChannel = useSelector((state) => state.currentChannelReducer.entities, shallowEqual);
+  const currentChannel = useSelector(currentChannelSelectors.selectEntities);
+  const currentChannelId = currentChannel.id
+  const channels = useSelector(channelsSelectors.selectEntities);
+
   const messages = useSelector((state) => Object.values(state.messageReducer.entities), shallowEqual);
-  const channelMessages = messages.filter(({channelId}) => channelId === currentChannel.id);
+  const channelMessages = messages.filter(({channelId}) => channelId === currentChannelId);
   const count = channelMessages.length;
 
   return (
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          <p className="m-0"><b># {currentChannel.name}</b></p>
+          {!_.isEmpty(channels) && <p className="m-0"><b># {channels[currentChannelId].name}</b></p>}
           <span className="text-muted">{t('mainPage.messages.counter.count', {count})}</span>
         </div>
-        {channelMessages.length !== 0 && <MessageBox channelMessages={channelMessages} />}
+        {!_.isEmpty(channelMessages) && <MessageBox channelMessages={channelMessages} />}
         <MessageForm currentChannel={currentChannel} />
       </div>
     </div>

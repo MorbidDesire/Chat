@@ -7,17 +7,20 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { changeCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { addChannel, channelsSelectors } from '../../slices/channelsSlice.js';
 import NewChannelModal from '../modals/NewChModal';
-import RenameChannelModal from '../modals/RenameChModal'
+import RenameChannelModal from '../modals/RenameChModal';
+import RemoveChannelModal from '../modals/RemoveChModal';
 
 const Channels = () => {
   const dispatch = useDispatch();
+  const [modalChannel, setModalChannel] = useState('')
   const [modalNewCh, setModalNew] = useState(false);
   const [modalRenameCh, setModalRename] = useState(false);
   const [modalRemoveCh, setModalRemove] = useState(false);
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
+  // console.log(channels)
   const channelNames = channels.map(({ name }) => name);
-  // const sos = useSelector((state) => state)
+  // const sos = useSelector((state) => state.channelsReducer)
   // console.log(sos)
   const currentChannelId = useSelector(currentChannelSelectors.selectIds);
 
@@ -29,7 +32,7 @@ const Channels = () => {
     if (!removable) {
       return (
         <li key={id} className="nav-item w-100">
-        <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start btn ${id === currentChannelId ? "btn-secondary" : '' }`}>
+        <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start text-truncate btn ${id === currentChannelId ? "btn-secondary" : '' }`}>
           <span className="me-1">#</span>
             {name}
         </button>
@@ -39,7 +42,7 @@ const Channels = () => {
       return (
         <li key={id} className="nav-item w-100">
           <Dropdown role="group" className="d-flex btn-group">
-            <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start btn ${id === currentChannelId ? "btn-secondary" : '' }`}>
+            <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start text-truncate btn ${id === currentChannelId ? "btn-secondary" : '' }`}>
               <span className="me-1">#</span>
                 {name}
             </button>
@@ -47,8 +50,8 @@ const Channels = () => {
               <span className="visually-hidden">Управление каналом</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="#" onClick={() => console.log('delete modal')}>Удалить</Dropdown.Item>
-              <Dropdown.Item href="#" onClick={(e) => {console.log(name); return setModalRename(true)}}>Переименовать</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={() => {setModalChannel(channel);setModalRemove(true)}}>Удалить</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={() => {setModalChannel(channel);setModalRename(true)}}>Переименовать</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </li>
@@ -56,7 +59,6 @@ const Channels = () => {
     }
 
   };
-
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
@@ -73,11 +75,18 @@ const Channels = () => {
         onHide={() => setModalNew(false)}
         channelnames={channelNames}
         />
-        <RenameChannelModal
+        {modalChannel && <RenameChannelModal
         show={modalRenameCh}
-        onHide={() => setModalRename(false)}
+        onHide={() => {setModalRename(false); setModalChannel('')}}
         channelnames={channelNames}
-        />
+        channel={modalChannel}
+        />}
+        {modalRemoveCh && <RemoveChannelModal
+        show={modalRemoveCh}
+        onHide={() => {setModalRemove(false); setModalChannel('')}}
+        channelnames={channelNames}
+        channel={modalChannel}
+        />}
       </div>
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
       {channels.map((channel) => <Channel channel={channel} key={channel.id} />)}

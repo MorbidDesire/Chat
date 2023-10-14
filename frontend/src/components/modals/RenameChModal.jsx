@@ -3,24 +3,29 @@ import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import React, { useCallback } from 'react';
 import { socket } from '../../index';
 
 const RenameChannelModal = (props) => {
-    console.log(props.channelname)
+  const inputEl = useCallback((inputElement) => {
+    if (inputElement) {
+      inputElement.select();
+    }
+  }, []);
   const channelSchema = yup.object({
     name: yup.string()
       .required('Обязательное поле')
       .min(3, 'От 3 до 20 символов')
       .max(20, 'От 3 до 20 символов')
       .notOneOf(props.channelnames, ('Должно быть уникальным'))
-    });
+  });
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: props.channel.name,
     },
     validationSchema: channelSchema,
-    onSubmit: (value) => {
-      socket.timeout(5000).emit('newChannel', value, (err) => {
+    onSubmit: ({ name }) => {
+      socket.timeout(5000).emit('renameChannel', { name, id: props.channel.id }, (err) => {
         if (err) {
           // Вывести сообщение об ошибке
           console.log('Timeout Error');
@@ -30,9 +35,6 @@ const RenameChannelModal = (props) => {
           // inputEl.current.removeAttribute('disabled');
         }
       });
-      // socket.on('newChannel', (channel) => {
-      //   console.log(channel)
-      // });
     },
   });
 
@@ -49,7 +51,7 @@ const RenameChannelModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <input name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.newChannel} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
+          <input ref={inputEl} name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
           <label className="visually-hidden" htmlFor="name">Добавить канал</label>
           {errors && touched.name
             ? <div className="invalid-feedback">{errors.name}</div>
