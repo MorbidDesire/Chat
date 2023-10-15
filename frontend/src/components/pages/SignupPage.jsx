@@ -2,6 +2,7 @@
 import React from 'react';
 import { Formik, Form, Field, useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 import avatar from '../../assets/signupavatar.jpg';
 
 const SignupPage = () => {
@@ -45,12 +46,18 @@ const SignupPage = () => {
                   confirmPassword: '',
                 }}
                 validationSchema={SignupSchema}
-                onSubmit={(values) => {
-                  console.log('Hey');
+                onSubmit={ async (values) => {
+                  await axios.post('api/v1/signup', values)
+                  .then(({data}) => {
+                    console.log(data)
+                  })
+                  .catch((e) => {
+                    console.log(e)
+                  })
                 }}
               >
                 {({ errors, touched }) => {
-                  console.log(errors, touched)
+                  console.log(errors)
                 return (
                   <Form className="w-50">
                     <h1 className="text-center mb-4">Регистрация</h1>
