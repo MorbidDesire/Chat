@@ -21,7 +21,7 @@ const MessageBox = ({channelMessages}) => {
 const MessageForm = ({ currentChannel }) => {
   const [text, setText] = useState('');
   // const inputEl = useRef(null);
-  const { userId } = useAuth();
+  const { username } = useAuth();
 
   const messageInput = useCallback((inputElement) => {
     if (inputElement) {
@@ -40,7 +40,7 @@ const MessageForm = ({ currentChannel }) => {
     // inputEl.current.setAttribute('disabled', true);
     const post = {
       text,
-      author: userId,
+      author: username,
       channelId: currentChannel.id,
       id: Number(_.uniqueId()),
     };

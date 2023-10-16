@@ -7,10 +7,13 @@ import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
 import avatar from '../../assets/avatar.json'
+import { useAuth } from '../useAuth';
+import Navigation from '../Navigation';
 
 const AuthForm = () => {
   const { t } = useTranslation('translation');
   const navigate = useNavigate();
+  const { login } = useAuth();
   const SignupSchema = yup.object({
     username: yup.string().required(),
     password: yup.string().required(),
@@ -18,7 +21,7 @@ const AuthForm = () => {
 
   const ErrorMessage = ({errors}) => {
     let textError = '';
-    if (_.has(errors, 'newtork')) {
+    if (_.has(errors, 'network')) {
       textError = t('loginPage.errors.newtorkError')
     } else {
       textError = t('loginPage.errors.authError')
@@ -31,8 +34,9 @@ const AuthForm = () => {
   const submitForm = async (values) => {
     await axios.post('api/v1/login', values)
     .then(({ data }) => {
-      localStorage.setItem('userId', data.username);
       localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      login();
       navigate('/', { replace: false })
     })
     .catch((error) => {
@@ -71,7 +75,7 @@ const AuthForm = () => {
       <Form.Group className="form-floating mb-4" controlId="password">
         <input name="password" type="password" required onChange={formik.handleChange} placeholder="Пароль" value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? "is-invalid" : ""}`}/>
         <label>{t('loginPage.password')}</label>
-        {(errors) && (touched.username && touched.password) ? (
+        {!_.isEmpty(errors) && (touched.username && touched.password) ? (
           <ErrorMessage errors={errors}/>
         ) : null}
       </Form.Group>
@@ -110,6 +114,7 @@ const Container = () => {
 
 const LoginPage = () => (
   <>
+    <Navigation />
     <Container />
   </>
 );
