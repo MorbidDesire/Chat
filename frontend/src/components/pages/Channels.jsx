@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import _ from 'lodash';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { addChannel, channelsSelectors } from '../../slices/channelsSlice.js';
 import NewChannelModal from '../modals/NewChModal';
@@ -47,11 +47,11 @@ const Channels = () => {
                 {name}
             </button>
             <Dropdown.Toggle variant="none" split id="dropdown-basic" aria-expanded="false" className={`flex-grow-0 ${id === currentChannelId ? "btn-secondary" : '' }`}>
-              <span className="visually-hidden">Управление каналом</span>
+              <span className="visually-hidden">{t('mainPage.channels.manageCh')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="#" onClick={() => {setModalChannel(channel);setModalRemove(true)}}>Удалить</Dropdown.Item>
-              <Dropdown.Item href="#" onClick={() => {setModalChannel(channel);setModalRename(true)}}>Переименовать</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={() => {setModalChannel(channel);setModalRemove(true)}}>{t('mainPage.channels.delete')}</Dropdown.Item>
+              <Dropdown.Item href="#" onClick={() => {setModalChannel(channel);setModalRename(true)}}>{t('mainPage.channels.rename')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </li>
@@ -89,7 +89,7 @@ const Channels = () => {
         />}
       </div>
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-      {channels.map((channel) => <Channel channel={channel} key={channel.id} />)}
+        {channels.map((channel) => <Channel channel={channel} key={channel.id} />)}
       </ul>
     </div>
   );

@@ -1,10 +1,11 @@
 /* eslint-disable */
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
 import React, { useCallback } from 'react';
 import { useFormik } from 'formik';
-import { socket } from '../../index';
+import { socket } from '../../init';
 
 const NewChannelModal = (props) => {
   const inputEl = useCallback((inputElement) => {
@@ -12,12 +13,13 @@ const NewChannelModal = (props) => {
       inputElement.select();
     }
   }, []);
+  const { t } = useTranslation('translation');
   const channelSchema = yup.object({
     name: yup.string()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(props.channelnames, ('Должно быть уникальным'))
+      .required(t('validation.required'))
+      .min(3, t('validation.range'))
+      .max(20, t('validation.range'))
+      .notOneOf(props.channelnames, t('validation.unique'))
     });
   const formik = useFormik({
     initialValues: {
@@ -30,15 +32,12 @@ const NewChannelModal = (props) => {
           // Вывести сообщение об ошибке
           console.log('Timeout Error');
         } else {
-          formik.setValues({name: ''}, false)
+          formik.setValues({ name: '' }, false)
           props.onHide();
           // Анблок кнопки
           // inputEl.current.removeAttribute('disabled');
         }
       });
-      // socket.on('newChannel', (channel) => {
-      //   console.log(channel)
-      // });
     },
   });
 
@@ -50,19 +49,19 @@ const NewChannelModal = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          Добавить канал
+          {t('mainPage.modals.addCh')}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <input name="name" ref={inputEl} id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
-          <label className="visually-hidden" htmlFor="name">Добавить канал</label>
+          <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.addCh')}</label>
           {errors && touched.name
             ? <div className="invalid-feedback">{errors.name}</div>
             : null}
           <div className="d-flex justify-content-end">
-            <button type="button" className="me-2 btn btn-secondary" onClick={props.onHide}>Отменить</button>
-            <button type="submit" className="btn btn-primary">Отправить</button>
+            <button type="button" className="me-2 btn btn-secondary" onClick={props.onHide}>{t('mainPage.modals.cancel')}</button>
+            <button type="submit" className="btn btn-primary">{t('mainPage.modals.send')}</button>
           </div>
         </Form>
       </Modal.Body>

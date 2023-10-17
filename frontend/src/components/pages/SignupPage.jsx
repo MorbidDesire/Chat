@@ -4,27 +4,36 @@ import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../useAuth';
 import avatar from '../../assets/signupavatar.jpg';
 import Navigation from '../Navigation';
 
 const SignupPage = () => {
+  const { t } = useTranslation('translation');
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .required(t('validation.required'))
+      .min(3, t('validation.range'))
+      .max(20, t('validation.range')),
     password: Yup.string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательное поле'),
+      .required(t('validation.required'))
+      .min(6, t('validation.minCount')),
     confirmPassword: Yup.string()
-      .required('Обязательное поле')
-      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
+      .required(t('validation.required'))
+      .oneOf([Yup.ref('password'), null], t('validation.samePasswords')),
   });
 
   const submitForm = async (values) => {
     await axios.post('api/v1/signup', values)
     .then(({ data }) => {
-      console.log(data);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      login();
+      navigate('/', { replace: false })
     })  
     .catch((error) => {
       if (error.response.status === 409) {
@@ -55,27 +64,27 @@ const SignupPage = () => {
             <div className="card shadow-sm">
               <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
                 <div>
-                  <img src={avatar} className="rounded-circle" alt="Регистрация" />
+                  <img src={avatar} className="rounded-circle" alt={t('signupPage.header')} />
                 </div>
                 <Form onSubmit={formik.handleSubmit} className="w-50">
-                  <h1 className="text-center mb-4">Регистрация</h1>
+                  <h1 className="text-center mb-4">{t('signupPage.header')}</h1>
                   <div className="form-floating mb-3">
-                    <input placeholder="От 3 до 20 символов" value={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur} label="username" name="username" autoComplete="username" required="" id="username" className={`form-control ${touched.username && (errors.username || errors.signup) ? "is-invalid" : ""}`} />
-                    <label className="form-label" htmlFor="username">Имя пользователя</label>
+                    <input placeholder={t('validation.range')} value={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur} label="username" name="username" autoComplete="username" required="" id="username" className={`form-control ${touched.username && (errors.username || errors.signup) ? "is-invalid" : ""}`} />
+                    <label className="form-label" htmlFor="username">{t('signupPage.username')}</label>
                     {errors.username && touched.username ? <div className="invalid-tooltip">{errors.username}</div> : null}
                   </div>
                   <div className="form-floating mb-3">
-                    <input placeholder="Не менее 6 символов" value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className={`form-control ${touched.password && (errors.password || errors.signup) ? "is-invalid" : ""}`}/>
-                    <label className="form-label" htmlFor="password">Пароль</label>
+                    <input placeholder={t('validation.minCount')} value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className={`form-control ${touched.password && (errors.password || errors.signup) ? "is-invalid" : ""}`}/>
+                    <label className="form-label" htmlFor="password">{t('signupPage.password')}</label>
                     {errors.password && touched.password ? <div className="invalid-tooltip">{errors.password}</div> : null}
                   </div>
                   <div className="form-floating mb-4">
-                    <input placeholder="Пароли должны совпадать" value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className={`form-control ${touched.confirmPassword && (errors.confirmPassword || errors.signup) ? "is-invalid" : ""}`}/>
-                    <label className="form-label" htmlFor="confirmPassword">Подтвердите пароль</label>
+                    <input placeholder={t('validation.samePasswords')} value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className={`form-control ${touched.confirmPassword && (errors.confirmPassword || errors.signup) ? "is-invalid" : ""}`}/>
+                    <label className="form-label" htmlFor="confirmPassword">{t('signupPage.passwordConfirmation')}</label>
                     {errors.confirmPassword && touched.confirmPassword ? <div className="invalid-tooltip">{errors.confirmPassword}</div> : null}
-                    {errors.signup ? <div className="invalid-tooltip">Такой пользователь уже существует</div> : null}
+                    {errors.signup ? <div className="invalid-tooltip">{t('validation.uniqueUser')}</div> : null}
                   </div>
-                  <button type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
+                  <button type="submit" className="w-100 btn btn-outline-primary">{t('signupPage.submit')}</button>
                 </Form>
               </div>
             </div>

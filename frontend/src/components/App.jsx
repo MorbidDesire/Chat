@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { AuthProvider } from "@reactivers/use-auth";
 // import { LocalStorageProvider } from "@reactivers/use-local-storage";
 import React from 'react';
-import { io } from 'socket.io-client';
 import { useAuth } from './useAuth';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';

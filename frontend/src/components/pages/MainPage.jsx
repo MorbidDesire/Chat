@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
 import { setChannels, addChannel } from '../../slices/channelsSlice';

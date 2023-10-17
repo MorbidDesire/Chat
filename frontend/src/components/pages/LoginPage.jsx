@@ -10,8 +10,7 @@ import avatar from '../../assets/avatar.json'
 import { useAuth } from '../useAuth';
 import Navigation from '../Navigation';
 
-const AuthForm = () => {
-  const { t } = useTranslation('translation');
+const AuthForm = ({ t }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const SignupSchema = yup.object({
@@ -69,11 +68,11 @@ const AuthForm = () => {
     <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <Form.Group className="form-floating mb-3" controlId="username">
-        <input name="username" required onChange={formik.handleChange} placeholder="Ваш ник" value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? "is-invalid" : ""}`} />
+        <input name="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? "is-invalid" : ""}`} />
         <label>{t('loginPage.username')}</label>
       </Form.Group>
       <Form.Group className="form-floating mb-4" controlId="password">
-        <input name="password" type="password" required onChange={formik.handleChange} placeholder="Пароль" value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? "is-invalid" : ""}`}/>
+        <input name="password" type="password" required onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? "is-invalid" : ""}`}/>
         <label>{t('loginPage.password')}</label>
         {!_.isEmpty(errors) && (touched.username && touched.password) ? (
           <ErrorMessage errors={errors}/>
@@ -97,7 +96,7 @@ const Container = () => {
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                 <img src={avatar} className="rounded-circle" alt="Войти" />
               </div>
-              <AuthForm />
+              <AuthForm t={t} />
             </div>
             <div className="card-footer p-4">
               <div className="text-center">

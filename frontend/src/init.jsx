@@ -1,12 +1,36 @@
 /* eslint-disable */
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { Provider } from 'react-redux';
+import store from './slices/index.js';
 import App from './components/App';
 import resources from './locales/index.js';
+import { useDispatch } from 'react-redux';
+import { io } from 'socket.io-client';
+import { addMessage } from './slices/messageSlice.js'
+import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice.js';
+
+
+export const socket = io('http://localhost:3000');
+const Socket = () => {
+  const dispatch = useDispatch();
+  socket.on('newMessage', (message) => {
+    dispatch(addMessage(message));
+  });
+  socket.on('newChannel', (channel) => {
+    dispatch(addChannel(channel));
+  });
+  socket.on('renameChannel', (channel) => {
+    dispatch(renameChannel(channel));
+  });
+  socket.on('removeChannel', (data) => {
+    dispatch(removeChannel(data));
+  });
+};
+
 
 const init = async () => {
   const i18n = i18next.createInstance();
-
   await i18n
     .use(initReactI18next)
     .init({
@@ -15,7 +39,10 @@ const init = async () => {
     });
   return (
     <I18nextProvider i18n={i18n}>
-      <App />
+      <Provider store={store}>
+        <Socket />
+        <App />
+      </Provider>
     </I18nextProvider>
   );
 };
