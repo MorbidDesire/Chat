@@ -63,5 +63,11 @@ export default {
     navigation: {
       logout: 'Выйти',
     },
+    toastify: {
+      add: 'Канал создан',
+      rename: 'Канал переименован',
+      remove: 'Канал удалён',
+      error: 'Ошибка загрузки данных',
+    },
   },
 };

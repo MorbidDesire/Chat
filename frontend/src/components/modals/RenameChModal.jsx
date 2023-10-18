@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import React, { useCallback } from 'react';
 import { socket } from '../../init';
+import notify from '../notify';
 
 const RenameChannelModal = (props) => {
   const inputEl = useCallback((inputElement) => {
@@ -30,9 +31,11 @@ const RenameChannelModal = (props) => {
       socket.timeout(5000).emit('renameChannel', { name, id: props.channel.id }, (err) => {
         if (err) {
           // Вывести сообщение об ошибке
+          notify('rename', 'error', t)
           console.log('Timeout Error');
         } else {
           props.onHide();
+          notify('rename', 'success', t)
           // Анблок кнопки
           // inputEl.current.removeAttribute('disabled');
         }

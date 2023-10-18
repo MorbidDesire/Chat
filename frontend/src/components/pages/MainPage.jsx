@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { normalize, schema } from 'normalizr';
+import axios from 'axios';
 import { setChannels, addChannel } from '../../slices/channelsSlice';
 import { setMessages, addMessage } from '../../slices/messageSlice';
 import { setCurrentChannel } from '../../slices/currentChannelSlice';
@@ -10,7 +11,6 @@ import { useAuth } from "../useAuth";
 import Navigation from '../Navigation';
 import Channels from './Channels';
 import Messages from './Messages';
-import axios from 'axios';
 
 const MainPage = () => {
   const navigate = useNavigate();

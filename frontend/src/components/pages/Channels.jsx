@@ -18,7 +18,6 @@ const Channels = () => {
   const [modalRemoveCh, setModalRemove] = useState(false);
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
-  // console.log(channels)
   const channelNames = channels.map(({ name }) => name);
   // const sos = useSelector((state) => state.channelsReducer)
   // console.log(sos)

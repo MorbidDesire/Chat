@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap';
 import React, { useCallback } from 'react';
 import { useFormik } from 'formik';
 import { socket } from '../../init';
+import notify from '../notify';
 
 const NewChannelModal = (props) => {
   const inputEl = useCallback((inputElement) => {
@@ -30,10 +31,12 @@ const NewChannelModal = (props) => {
       socket.timeout(5000).emit('newChannel', value, (err) => {
         if (err) {
           // Вывести сообщение об ошибке
+          notify('add', 'error', t)
           console.log('Timeout Error');
         } else {
           formik.setValues({ name: '' }, false)
           props.onHide();
+          notify('add', 'success', t)
           // Анблок кнопки
           // inputEl.current.removeAttribute('disabled');
         }

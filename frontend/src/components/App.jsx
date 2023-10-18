@@ -2,6 +2,7 @@
 import '../App.css';
 import '../index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 // import { AuthProvider } from "@reactivers/use-auth";
 // import { LocalStorageProvider } from "@reactivers/use-local-storage";
 import React from 'react';
@@ -10,6 +11,7 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import EmptyPage from './pages/EmptyPage';
 import SignupPage from './pages/SignupPage';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthProvider = ({ children }) => {
   const auth = useAuth();
@@ -35,6 +37,7 @@ const App = () => {
           </Routes>
         </BrowserRouter>
       </div>
+      <ToastContainer />
     </AuthProvider>
   );
 };
