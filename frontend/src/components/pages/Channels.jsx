@@ -9,6 +9,7 @@ import { addChannel, channelsSelectors } from '../../slices/channelsSlice.js';
 import NewChannelModal from '../modals/NewChModal';
 import RenameChannelModal from '../modals/RenameChModal';
 import RemoveChannelModal from '../modals/RemoveChModal';
+import filter from '../../clean';
 
 const Channels = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Channels = () => {
           <Dropdown role="group" className="d-flex btn-group">
             <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start text-truncate btn ${id === currentChannelId ? "btn-secondary" : '' }`}>
               <span className="me-1">#</span>
-                {name}
+                {filter(name)}
             </button>
             <Dropdown.Toggle variant="none" split id="dropdown-basic" aria-expanded="false" className={`flex-grow-0 ${id === currentChannelId ? "btn-secondary" : '' }`}>
               <span className="visually-hidden">{t('mainPage.channels.manageCh')}</span>
@@ -56,8 +57,8 @@ const Channels = () => {
         </li>
       );
     }
-
   };
+
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">

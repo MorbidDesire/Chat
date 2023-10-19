@@ -54,28 +54,6 @@ const MainPage = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //   const instance = axios.create({
-  //     timeout: 1000,
-  //     headers: {'Authorization': 'Bearer '+token}
-  //   });
-  //   const { data } = await instance.get('/api/v1/data');
-  //   const { normalizedChannels, normalizedMessages } = getNormalized(data);
-  //   const { currentChannelId } = data;
-  //   const { channels } = normalizedChannels.entities;
-  //   const currentChannel = Object.values(channels).find(({id}) => id === currentChannelId);
-  //   // const user = state.users.find(({ id }) => id === req.user.userId);
-
-  //   const messages = !Object.keys(normalizedMessages.entities).length ? {} : normalizedMessages.entities.messages;
-  
-  //   dispatch(setChannels({ entities: channels, ids: Object.keys(channels) }));
-  //   dispatch(setCurrentChannel({ entities: currentChannel, ids: currentChannel.id  }))
-  //   dispatch(setMessages({ entities: messages, ids: Object.keys(messages) }));
-  //   }
-  //   fetchData();  
-  // }, []);
-
   if (token) {
     return (
       <>

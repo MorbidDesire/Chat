@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import React, { useCallback } from 'react';
 import { socket } from '../../init';
 import notify from '../notify';
+import filter from '../../clean';
 
 const RenameChannelModal = (props) => {
   const inputEl = useCallback((inputElement) => {
@@ -24,7 +25,7 @@ const RenameChannelModal = (props) => {
     });
   const formik = useFormik({
     initialValues: {
-      name: props.channel.name,
+      name: filter(props.channel.name),
     },
     validationSchema: channelSchema,
     onSubmit: ({ name }) => {
@@ -58,9 +59,7 @@ const RenameChannelModal = (props) => {
         <Form onSubmit={formik.handleSubmit}>
           <input ref={inputEl} name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
           <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.addCh')}</label>
-          {errors && touched.name
-            ? <div className="invalid-feedback">{errors.name}</div>
-            : null}
+          {errors && touched.name ? <div className="invalid-feedback">{errors.name}</div> : null}
           <div className="d-flex justify-content-end">
             <button type="button" className="me-2 btn btn-secondary" onClick={props.onHide}>{t('mainPage.modals.cancel')}</button>
             <button type="submit" className="btn btn-primary">{t('mainPage.modals.send')}</button>

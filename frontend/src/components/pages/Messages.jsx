@@ -7,12 +7,13 @@ import { useAuth } from "../useAuth";
 import { socket } from '../../init'
 import { currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice';
+import filter from '../../clean';
 
 const MessageBox = ({channelMessages}) => {
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5 ">
       {channelMessages.map(({ author, text, id }) => (
-        <div key={id} className="text-break mb-2"><b>{author}</b>: {text}</div>
+        <div key={id} className="text-break mb-2"><b>{author}</b>: {filter(text)}</div>
       ))}
     </div>
   )
@@ -89,7 +90,7 @@ const Messages = () => {
     <div className="col p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
-          {!_.isEmpty(channels) && <p className="m-0"><b># {channels[currentChannelId].name}</b></p>}
+          {!_.isEmpty(channels) && <p className="m-0"><b># {filter(channels[currentChannelId].name)}</b></p>}
           <span className="text-muted">{t('mainPage.messages.counter.count', {count})}</span>
         </div>
         {!_.isEmpty(channelMessages) && <MessageBox channelMessages={channelMessages} />}
