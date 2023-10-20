@@ -1,27 +1,27 @@
-/* eslint-disable */
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
 import React, { useCallback } from 'react';
 import { useFormik } from 'formik';
-import { socket } from '../../init';
+import { socket } from '../../socket';
 import notify from '../notify';
 
 const NewChannelModal = (props) => {
+  const { t } = useTranslation('translation');
+  const { channelnames, onHide } = props;
   const inputEl = useCallback((inputElement) => {
     if (inputElement) {
       inputElement.select();
     }
   }, []);
-  const { t } = useTranslation('translation');
   const channelSchema = yup.object({
     name: yup.string()
       .required(t('validation.required'))
       .min(3, t('validation.range'))
       .max(20, t('validation.range'))
-      .notOneOf(props.channelnames, t('validation.unique'))
-    });
+      .notOneOf(channelnames, t('validation.unique')),
+  });
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -31,12 +31,12 @@ const NewChannelModal = (props) => {
       socket.timeout(5000).emit('newChannel', value, (err) => {
         if (err) {
           // Вывести сообщение об ошибке
-          notify('add', 'error', t)
+          notify('add', 'error', t);
           console.log('Timeout Error');
         } else {
-          formik.setValues({ name: '' }, false)
-          props.onHide();
-          notify('add', 'success', t)
+          formik.setValues({ name: '' }, false);
+          onHide();
+          notify('add', 'success', t);
           // Анблок кнопки
           // inputEl.current.removeAttribute('disabled');
         }
@@ -63,7 +63,7 @@ const NewChannelModal = (props) => {
             ? <div className="invalid-feedback">{errors.name}</div>
             : null}
           <div className="d-flex justify-content-end">
-            <button type="button" className="me-2 btn btn-secondary" onClick={props.onHide}>{t('mainPage.modals.cancel')}</button>
+            <button type="button" className="me-2 btn btn-secondary" onClick={onHide}>{t('mainPage.modals.cancel')}</button>
             <button type="submit" className="btn btn-primary">{t('mainPage.modals.send')}</button>
           </div>
         </Form>

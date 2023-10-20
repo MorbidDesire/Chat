@@ -1,24 +1,23 @@
-/* eslint-disable */
 import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
-import React, { useCallback } from 'react';
-import { socket } from '../../init';
+import { socket } from '../../socket';
 import notify from '../notify';
 
 const RemoveChannelModal = (props) => {
-  const { t } = useTranslation('translation'); 
+  const { t } = useTranslation('translation');
+  const { onHide, channel } = props;
   const handleRemoveChannel = () => {
-    socket.timeout(5000).emit('removeChannel', { id: props.channel.id }, (err) => {
-        if (err) {
+    socket.timeout(5000).emit('removeChannel', { id: channel.id }, (err) => {
+      if (err) {
         // Вывести сообщение об ошибке
-        notify('remove', 'error', t)
+        notify('remove', 'error', t);
         console.log('Timeout Error');
-        } else {
-        props.onHide();
-        notify('remove', 'success', t)
+      } else {
+        onHide();
+        notify('remove', 'success', t);
         // Анблок кнопки
         // inputEl.current.removeAttribute('disabled');
-        }
+      }
     });
   };
   return (
@@ -34,7 +33,7 @@ const RemoveChannelModal = (props) => {
       <Modal.Body>
         <p className="lead">{t('mainPage.modals.confirmation')}</p>
         <div className="d-flex justify-content-end">
-          <button type="button" className="me-2 btn btn-secondary" onClick={props.onHide}>{t('mainPage.modals.cancel')}</button>
+          <button type="button" className="me-2 btn btn-secondary" onClick={onHide}>{t('mainPage.modals.cancel')}</button>
           <button type="button" className="btn btn-danger" onClick={handleRemoveChannel}>{t('mainPage.modals.delete')}</button>
         </div>
       </Modal.Body>

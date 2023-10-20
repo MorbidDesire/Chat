@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
@@ -27,21 +26,21 @@ const SignupPage = () => {
       .oneOf([Yup.ref('password'), null], t('validation.samePasswords')),
   });
 
-  const submitForm = async (values) => {
+  const submitForm = async (values, formik) => {
     await axios.post('api/v1/signup', values)
-    .then(({ data }) => {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
-      login();
-      navigate('/', { replace: false })
-    })  
-    .catch((error) => {
-      if (error.response.status === 409) {
-        formik.setErrors({'signup': '409'});
-        console.log(error)
-      }
-    })
-  }
+      .then(({ data }) => {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.username);
+        login();
+        navigate('/', { replace: false });
+      })
+      .catch((error) => {
+        if (error.response.status === 409) {
+          formik.setErrors({ signup: '409' });
+          console.log(error);
+        }
+      });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -50,8 +49,8 @@ const SignupPage = () => {
       confirmPassword: '',
     },
     validationSchema: SignupSchema,
-    onSubmit: values => {
-      submitForm(values)
+    onSubmit: (values) => {
+      submitForm(values, formik);
     },
   });
   const { errors, touched } = formik;
@@ -69,17 +68,17 @@ const SignupPage = () => {
                 <Form onSubmit={formik.handleSubmit} className="w-50">
                   <h1 className="text-center mb-4">{t('signupPage.header')}</h1>
                   <div className="form-floating mb-3">
-                    <input placeholder={t('validation.range')} value={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur} label="username" name="username" autoComplete="username" required="" id="username" className={`form-control ${touched.username && (errors.username || errors.signup) ? "is-invalid" : ""}`} />
+                    <input placeholder={t('validation.range')} value={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur} label="username" name="username" autoComplete="username" required="" id="username" className={`form-control ${touched.username && (errors.username || errors.signup) ? 'is-invalid' : ''}`} />
                     <label className="form-label" htmlFor="username">{t('signupPage.username')}</label>
                     {errors.username && touched.username ? <div className="invalid-tooltip">{errors.username}</div> : null}
                   </div>
                   <div className="form-floating mb-3">
-                    <input placeholder={t('validation.minCount')} value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className={`form-control ${touched.password && (errors.password || errors.signup) ? "is-invalid" : ""}`}/>
+                    <input placeholder={t('validation.minCount')} value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className={`form-control ${touched.password && (errors.password || errors.signup) ? 'is-invalid' : ''}`} />
                     <label className="form-label" htmlFor="password">{t('signupPage.password')}</label>
                     {errors.password && touched.password ? <div className="invalid-tooltip">{errors.password}</div> : null}
                   </div>
                   <div className="form-floating mb-4">
-                    <input placeholder={t('validation.samePasswords')} value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className={`form-control ${touched.confirmPassword && (errors.confirmPassword || errors.signup) ? "is-invalid" : ""}`}/>
+                    <input placeholder={t('validation.samePasswords')} value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className={`form-control ${touched.confirmPassword && (errors.confirmPassword || errors.signup) ? 'is-invalid' : ''}`} />
                     <label className="form-label" htmlFor="confirmPassword">{t('signupPage.passwordConfirmation')}</label>
                     {errors.confirmPassword && touched.confirmPassword ? <div className="invalid-tooltip">{errors.confirmPassword}</div> : null}
                     {errors.signup ? <div className="invalid-tooltip">{t('validation.uniqueUser')}</div> : null}
@@ -96,7 +95,8 @@ const SignupPage = () => {
 };
 export default SignupPage;
 
-{/* <form className="w-50">
+// eslint-disable-next-line no-lone-blocks
+{ /* <form className="w-50">
 <h1 className="text-center mb-4">Регистрация</h1>
 <div className="form-floating mb-3">
   <input placeholder="От 3 до 20 символов" name="username" autoComplete="username" required="" id="username" className="form-control" value={formik.values.username} onChange={formik.handleChange} />
@@ -114,4 +114,4 @@ export default SignupPage;
   <label className="form-label" htmlFor="confirmPassword">Подтвердите пароль</label>
 </div>
 <button type="submit" className="w-100 btn btn-outline-primary">Зарегистрироваться</button>
-</form> */}
+</form> */ }

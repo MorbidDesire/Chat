@@ -1,4 +1,3 @@
-/* eslint-disable */
 import '../App.css';
 import '../index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -24,22 +23,20 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const App = () => {
-  return (  
-    <AuthProvider>
-      <div className="d-flex flex-column h-100">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="*" element={<EmptyPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-      <ToastContainer />
-    </AuthProvider>
-  );
-};
+const App = () => (
+  <AuthProvider>
+    <div className="d-flex flex-column h-100">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="*" element={<EmptyPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+    <ToastContainer />
+  </AuthProvider>
+);
 
 export default App;

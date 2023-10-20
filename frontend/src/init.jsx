@@ -2,14 +2,13 @@
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider, useDispatch } from 'react-redux';
-import { io } from 'socket.io-client';
+import { socket } from './socket';
 import store from './slices/index.js';
 import App from './components/App';
 import resources from './locales/index.js';
 import { addMessage } from './slices/messageSlice.js';
 import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice.js';
 
-export const socket = io('http://localhost:3000');
 const Socket = () => {
   const dispatch = useDispatch();
   socket.on('newMessage', (message) => {

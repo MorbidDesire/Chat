@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useState } from 'react';
 
 export const useAuth = () => {
