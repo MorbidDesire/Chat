@@ -47,6 +47,7 @@ const MessageForm = ({ currentChannel, t }) => {
     socket.timeout(5000).emit('newMessage', post, (err, response) => {
       if (err) {
         // Вывести сообщение об ошибке
+        throw new Error(err)
         console.log('Timeout Error')
       } else {
         // Анблок кнопки
