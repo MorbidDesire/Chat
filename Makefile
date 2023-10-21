@@ -14,7 +14,7 @@ start-backend:
 # 	git push heroku main
 
 start:
-	make start-backend & make start-frontend
+	make start-backend
 
 build: 
 	make -C frontend build
