@@ -12,7 +12,6 @@
   "author": "Alexander Grechin",
   "license": "ISC",
   "dependencies": {
-    "@fastify/static": "^6.11.2",
     "@hexlet/chat-server": "^1.1.8"
   }
 }
