@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -54,19 +53,17 @@ const MainPage = () => {
     }
   });
 
-  if (token) {
-    return (
-      <>
-        <Navigation />
-        <div className="container h-100 my-4 overflow-hidden rounded shadow">
-          <div className="row h-100 bg-white flex-md-row">
-            <Channels />
-            <Messages />
-          </div>
+  return (
+    <>
+      <Navigation />
+      <div className="container h-100 my-4 overflow-hidden rounded shadow">
+        <div className="row h-100 bg-white flex-md-row">
+          <Channels />
+          <Messages />
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 };
 
 export default MainPage;

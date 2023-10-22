@@ -48,7 +48,6 @@ const AuthForm = ({ t }) => {
             console.log(error);
             break;
         }
-      // console.log(formik.errors); // Вот здесь обращайся к ошибкам !
       });
   };
 
@@ -68,11 +67,11 @@ const AuthForm = ({ t }) => {
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <Form.Group className="form-floating mb-3" controlId="username">
         <input name="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
-        <label>{t('loginPage.username')}</label>
+        <label htmlFor="username">{t('loginPage.username')}</label>
       </Form.Group>
       <Form.Group className="form-floating mb-4" controlId="password">
         <input name="password" type="password" required onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
-        <label>{t('loginPage.password')}</label>
+        <label htmlFor="password">{t('loginPage.password')}</label>
         {!_.isEmpty(errors) && (touched.username && touched.password) ? (
           <ErrorMessage errors={errors} t={t} />
         ) : null}

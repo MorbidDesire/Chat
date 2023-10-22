@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
 import { socket } from '../../socket';
-import notify from '../notify';
+import notify from '../../notify';
 
 const RemoveChannelModal = (props) => {
   const { t } = useTranslation('translation');
@@ -11,7 +11,7 @@ const RemoveChannelModal = (props) => {
       if (err) {
         // Вывести сообщение об ошибке
         notify('remove', 'error', t);
-        console.log('Timeout Error');
+        console.log(err);
       } else {
         onHide();
         notify('remove', 'success', t);

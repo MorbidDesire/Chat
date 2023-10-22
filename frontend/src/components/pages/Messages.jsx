@@ -1,5 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import React, { useState, useCallback } from 'react';
+import React, {
+  useState,
+  // useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import _ from 'lodash';
 import { useAuth } from '../useAuth';
@@ -7,6 +12,7 @@ import { socket } from '../../socket';
 import { currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice';
 import filter from '../../clean';
+import notify from '../../notify';
 
 const MessageBox = ({ channelMessages }) => (
   <div id="messages-box" className="chat-messages overflow-auto px-5 ">
@@ -19,12 +25,12 @@ const MessageBox = ({ channelMessages }) => (
 const MessageForm = ({ currentChannel, t }) => {
   const [text, setText] = useState('');
   const { username } = useAuth();
-
-  const messageInput = useCallback((inputElement) => {
-    if (inputElement) {
-      inputElement.focus();
+  const inputEl = useRef(null);
+  useEffect(() => {
+    if (inputEl.current) {
+      inputEl.current.focus();
     }
-  }, []);
+  }, [currentChannel]);
 
   const handleChange = ({ target }) => {
     setText(target.value);
@@ -32,7 +38,7 @@ const MessageForm = ({ currentChannel, t }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(messageInput)
+    console.log(inputEl);
     // Блок кнопки
     // inputEl.current.setAttribute('disabled', true);
     const post = {
@@ -42,12 +48,15 @@ const MessageForm = ({ currentChannel, t }) => {
       id: Number(_.uniqueId()),
     };
     socket.timeout(5000).emit('newMessage', post, (err) => {
+      inputEl.current.setAttribute('disabled', true);
       if (err) {
         // Вывести сообщение об ошибке
-        console.log('Timeout Error');
+        notify('add', 'error', t);
+        console.log(err);
       } else {
         // Анблок кнопки
-        // inputEl.current.removeAttribute('disabled');
+        inputEl.current.removeAttribute('disabled');
+        inputEl.current.focus();
       }
     });
     setText('');
@@ -57,7 +66,7 @@ const MessageForm = ({ currentChannel, t }) => {
     <div className="mt-auto px-5 py-3">
       <form noValidate className="py-1 border rounded-2" onSubmit={handleSubmit}>
         <div className="input-group has-validation">
-          <input name="body" ref={messageInput} aria-label={t('mainPage.messages.new')} placeholder={t('mainPage.messages.placeholder')} className="border-0 p-0 ps-2 form-control" value={text} onChange={handleChange} />
+          <input name="body" ref={inputEl} aria-label={t('mainPage.messages.new')} placeholder={t('mainPage.messages.placeholder')} className="border-0 p-0 ps-2 form-control" value={text} onChange={handleChange} />
           <button type="submit" disabled={text.trim() === ''} className="btn btn-group-vertical">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
               <path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />

@@ -2,8 +2,6 @@ import '../App.css';
 import '../index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-// import { AuthProvider } from "@reactivers/use-auth";
-// import { LocalStorageProvider } from "@reactivers/use-local-storage";
 import React from 'react';
 import { useAuth } from './useAuth';
 import MainPage from './pages/MainPage';

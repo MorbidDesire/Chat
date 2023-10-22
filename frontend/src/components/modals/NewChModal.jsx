@@ -2,19 +2,25 @@ import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
-import React, { useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { socket } from '../../socket';
-import notify from '../notify';
+import notify from '../../notify';
 
 const NewChannelModal = (props) => {
   const { t } = useTranslation('translation');
   const { channelnames, onHide } = props;
-  const inputEl = useCallback((inputElement) => {
-    if (inputElement) {
-      inputElement.select();
+  const inputEl = useRef(null);
+  useEffect(() => {
+    if (inputEl.current) {
+      inputEl.current.focus();
     }
-  }, []);
+  });
+  // const inputEl = useCallback((inputElement) => {
+  //   if (inputElement) {
+  //     inputElement.select();
+  //   }
+  // }, []);
   const channelSchema = yup.object({
     name: yup.string()
       .required(t('validation.required'))

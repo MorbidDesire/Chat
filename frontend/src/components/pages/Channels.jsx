@@ -59,8 +59,6 @@ const Channels = () => {
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
   const channelNames = channels.map(({ name }) => name);
-  // const sos = useSelector((state) => state.channelsReducer)
-  // console.log(sos)
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">

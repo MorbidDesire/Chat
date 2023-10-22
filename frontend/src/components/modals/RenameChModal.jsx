@@ -3,17 +3,19 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import React, { useCallback } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { socket } from '../../socket';
-import notify from '../notify';
+import notify from '../../notify';
 import filter from '../../clean';
 
 const RenameChannelModal = (props) => {
-  const inputEl = useCallback((inputElement) => {
-    if (inputElement) {
-      inputElement.select();
+  const inputEl = useRef(null);
+  useEffect(() => {
+    if (inputEl.current) {
+      inputEl.current.select();
     }
   }, []);
+
   const { t } = useTranslation('translation');
   const { onHide, channel, channelnames } = props;
   const channelSchema = yup.object({
