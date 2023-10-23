@@ -78,12 +78,12 @@ const AuthForm = ({ t }) => {
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <fieldset ref={fieldsetEl}>
         <Form.Group className="form-floating mb-3" controlId="username">
-          <input name="username" ref={inputEl} required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
-          <label htmlFor="username">{t('loginPage.username')}</label>
+          <input name="username" ref={inputEl} autoComplete="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} id="username" className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
+          <label htmlFor="username" className="form-label">{t('loginPage.username')}</label>
         </Form.Group>
         <Form.Group className="form-floating mb-4" controlId="password">
-          <input name="password" required type="password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
-          <label htmlFor="password">{t('loginPage.password')}</label>
+          <input name="password" required type="password" autoComplete="current-password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} id="password" className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
+          <label htmlFor="password" className="form-label">{t('loginPage.password')}</label>
           {/* {!_.isEmpty(errors) && (touched.username && touched.password) ? (
             <ErrorMessage errors={errors} t={t} />
           ) : null} */}
