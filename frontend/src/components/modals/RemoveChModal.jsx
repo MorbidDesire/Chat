@@ -9,14 +9,11 @@ const RemoveChannelModal = (props) => {
   const handleRemoveChannel = () => {
     socket.timeout(5000).emit('removeChannel', { id: channel.id }, (err) => {
       if (err) {
-        // Вывести сообщение об ошибке
         notify('remove', 'error', t);
         console.log(err);
       } else {
         onHide();
         notify('remove', 'success', t);
-        // Анблок кнопки
-        // inputEl.current.removeAttribute('disabled');
       }
     });
   };

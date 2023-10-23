@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import React, {
   useState,
-  // useCallback,
   useEffect,
   useRef,
 } from 'react';
@@ -38,9 +37,7 @@ const MessageForm = ({ currentChannel, t }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputEl);
-    // Блок кнопки
-    // inputEl.current.setAttribute('disabled', true);
+    inputEl.current.setAttribute('disabled', true);
     const post = {
       text,
       author: username,
@@ -50,14 +47,11 @@ const MessageForm = ({ currentChannel, t }) => {
     socket.timeout(5000).emit('newMessage', post, (err) => {
       inputEl.current.setAttribute('disabled', true);
       if (err) {
-        // Вывести сообщение об ошибке
         notify('add', 'error', t);
         console.log(err);
-      } else {
-        // Анблок кнопки
-        inputEl.current.removeAttribute('disabled');
-        inputEl.current.focus();
       }
+      inputEl.current.removeAttribute('disabled');
+      inputEl.current.focus();
     });
     setText('');
   };

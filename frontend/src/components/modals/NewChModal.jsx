@@ -34,18 +34,17 @@ const NewChannelModal = (props) => {
     },
     validationSchema: channelSchema,
     onSubmit: (value) => {
+      inputEl.current.setAttribute('disabled', true);
       socket.timeout(5000).emit('newChannel', value, (err) => {
         if (err) {
-          // Вывести сообщение об ошибке
           notify('add', 'error', t);
-          console.log('Timeout Error');
+          console.log(err);
         } else {
           formik.setValues({ name: '' }, false);
           onHide();
           notify('add', 'success', t);
-          // Анблок кнопки
-          // inputEl.current.removeAttribute('disabled');
         }
+        inputEl.current.removeAttributeAttribute('disabled');
       });
     },
   });

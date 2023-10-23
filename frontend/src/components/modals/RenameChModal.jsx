@@ -31,17 +31,16 @@ const RenameChannelModal = (props) => {
     },
     validationSchema: channelSchema,
     onSubmit: ({ name }) => {
+      inputEl.current.setAttribute('disabled', true);
       socket.timeout(5000).emit('renameChannel', { name, id: channel.id }, (err) => {
         if (err) {
-          // Вывести сообщение об ошибке
           notify('rename', 'error', t);
-          console.log('Timeout Error');
+          console.log(err);
         } else {
           onHide();
           notify('rename', 'success', t);
-          // Анблок кнопки
-          // inputEl.current.removeAttribute('disabled');
         }
+        inputEl.current.removeAttribute('disabled');
       });
     },
   });
