@@ -26,7 +26,7 @@ const AuthForm = ({ t }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const fieldsetEl = useRef(null);
-  const SignupSchema = yup.object({
+  const authSchema = yup.object({
     username: yup.string().required(),
     password: yup.string().required(),
   });
@@ -59,7 +59,7 @@ const AuthForm = ({ t }) => {
       username: '',
       password: '',
     },
-    validationSchema: SignupSchema,
+    validationSchema: authSchema,
     onSubmit: (values) => {
       submitForm(values, formik);
     },
@@ -71,11 +71,11 @@ const AuthForm = ({ t }) => {
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <fieldset ref={fieldsetEl}>
         <Form.Group className="form-floating mb-3" controlId="username">
-          <input name="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
+          <input name="username" onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
           <label htmlFor="username">{t('loginPage.username')}</label>
         </Form.Group>
         <Form.Group className="form-floating mb-4" controlId="password">
-          <input name="password" type="password" required onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
+          <input name="password" type="password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
           <label htmlFor="password">{t('loginPage.password')}</label>
           {!_.isEmpty(errors) && (touched.username && touched.password) ? (
             <ErrorMessage errors={errors} t={t} />
