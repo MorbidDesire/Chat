@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,12 @@ const AuthForm = ({ t }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const fieldsetEl = useRef(null);
+  const inputEl = useRef(null);
+  useEffect(() => {
+    if (inputEl.current) {
+      inputEl.current.focus();
+    }
+  }, []);
   const authSchema = yup.object({
     username: yup.string().required(),
     password: yup.string().required(),
@@ -66,17 +72,17 @@ const AuthForm = ({ t }) => {
   });
 
   const { errors, touched } = formik;
-  console.log(errors);
+  console.log(formik);
   return (
     <Form disabled={formik.isSubmitting} onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <fieldset ref={fieldsetEl}>
         <Form.Group className="form-floating mb-3" controlId="username">
-          <input name="username" onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
+          <input name="username" ref={inputEl} required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
           <label htmlFor="username">{t('loginPage.username')}</label>
         </Form.Group>
         <Form.Group className="form-floating mb-4" controlId="password">
-          <input name="password" type="password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
+          <input name="password" required type="password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
           <label htmlFor="password">{t('loginPage.password')}</label>
           {/* {!_.isEmpty(errors) && (touched.username && touched.password) ? (
             <ErrorMessage errors={errors} t={t} />
