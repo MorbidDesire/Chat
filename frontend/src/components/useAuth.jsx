@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useAuth = () => {
+export default () => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [username, setUser] = useState(localStorage.getItem('username'));
   const logout = () => {

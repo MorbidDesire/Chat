@@ -6,7 +6,7 @@ import axios from 'axios';
 import { setChannels } from '../../slices/channelsSlice';
 import { setMessages } from '../../slices/messageSlice';
 import { setCurrentChannel } from '../../slices/currentChannelSlice';
-import { useAuth } from '../useAuth';
+import useAuth from '../useAuth';
 import Navigation from '../Navigation';
 import Channels from './Channels';
 import Messages from './Messages';
@@ -41,9 +41,9 @@ const MainPage = () => {
         const { currentChannelId } = data;
         const { channels } = normalizedChannels.entities;
         const currentChannel = Object.values(channels).find(({ id }) => id === currentChannelId);
-        // const user = state.users.find(({ id }) => id === req.user.userId);
 
-        const messages = !Object.keys(normalizedMessages.entities).length ? {} : normalizedMessages.entities.messages;
+        const messages = !Object.keys(normalizedMessages.entities).length
+          ? {} : normalizedMessages.entities.messages;
 
         dispatch(setChannels({ entities: channels, ids: Object.keys(channels) }));
         dispatch(setCurrentChannel({ entities: currentChannel, ids: currentChannel.id }));

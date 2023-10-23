@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';

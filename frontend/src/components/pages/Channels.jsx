@@ -94,7 +94,16 @@ const Channels = () => {
         )}
       </div>
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-        {channels.map((channel) => <Channel channel={channel} key={channel.id} t={t} setModalChannel={setModalChannel} setModalRemove={setModalRemove} setModalRename={setModalRename} />)}
+        {channels.map((channel) => (
+          <Channel
+            channel={channel}
+            key={channel.id}
+            t={t}
+            setModalChannel={setModalChannel}
+            setModalRemove={setModalRemove}
+            setModalRename={setModalRename}
+          />
+        ))}
       </ul>
     </div>
   );

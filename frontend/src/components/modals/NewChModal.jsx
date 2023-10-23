@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -16,11 +17,6 @@ const NewChannelModal = (props) => {
       inputEl.current.focus();
     }
   });
-  // const inputEl = useCallback((inputElement) => {
-  //   if (inputElement) {
-  //     inputElement.select();
-  //   }
-  // }, []);
   const channelSchema = yup.object({
     name: yup.string()
       .required(t('validation.required'))

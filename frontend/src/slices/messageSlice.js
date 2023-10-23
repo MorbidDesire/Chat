@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { removeChannel } from './channelsSlice';
 
@@ -25,7 +26,8 @@ const messageSlice = createSlice({
     builder
       .addCase(removeChannel, (state, { payload }) => {
         const { id } = payload;
-        const newMessages = Object.entries(state.entities).filter(([, value]) => value.channelId !== id);
+        const newMessages = Object.entries(state.entities)
+          .filter(([, value]) => value.channelId !== id);
         state.entities = Object.fromEntries(newMessages);
         state.ids = Object.keys(state.entities);
       });

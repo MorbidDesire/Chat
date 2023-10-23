@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import axios from 'axios';
 import avatar from '../../assets/avatar.json';
-import { useAuth } from '../useAuth';
+import useAuth from '../useAuth';
 import Navigation from '../Navigation';
 
 // const ErrorMessage = ({ errors, t }) => {
@@ -112,7 +112,10 @@ const Container = () => {
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>{t('loginPage.noAcc')} </span>
+                <span>
+                  {t('loginPage.noAcc')}
+                  {' '}
+                </span>
                 <a href="/signup">{t('loginPage.reg')}</a>
               </div>
             </div>

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../useAuth';
+import useAuth from '../useAuth';
 import avatar from '../../assets/signupavatar.jpg';
 import Navigation from '../Navigation';
 
