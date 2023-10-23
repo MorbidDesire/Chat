@@ -3,24 +3,24 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import _ from 'lodash';
+// import _ from 'lodash';
 import * as yup from 'yup';
 import axios from 'axios';
 import avatar from '../../assets/avatar.json';
 import { useAuth } from '../useAuth';
 import Navigation from '../Navigation';
 
-const ErrorMessage = ({ errors, t }) => {
-  let textError = '';
-  if (_.has(errors, 'network')) {
-    textError = t('loginPage.errors.newtorkError');
-  } else {
-    textError = t('loginPage.errors.authError');
-  }
-  return (
-    <div className="invalid-tooltip" style={{ display: 'block' }}>{textError}</div>
-  );
-};
+// const ErrorMessage = ({ errors, t }) => {
+//   let textError = '';
+//   if (_.has(errors, 'network')) {
+//     textError = t('loginPage.errors.newtorkError');
+//   } else {
+//     textError = t('loginPage.errors.authError');
+//   }
+//   return (
+//     <div className="invalid-tooltip" style={{ display: 'block' }}>{textError}</div>
+//   );
+// };
 
 const AuthForm = ({ t }) => {
   const navigate = useNavigate();
@@ -78,9 +78,10 @@ const AuthForm = ({ t }) => {
         <Form.Group className="form-floating mb-4" controlId="password">
           <input name="password" type="password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
           <label htmlFor="password">{t('loginPage.password')}</label>
-          {!_.isEmpty(errors) && (touched.username && touched.password) ? (
+          {/* {!_.isEmpty(errors) && (touched.username && touched.password) ? (
             <ErrorMessage errors={errors} t={t} />
-          ) : null}
+          ) : null} */}
+          {errors ? <div className="invalid-tooltip">{t('loginPage.errors.authError')}</div> : null}
         </Form.Group>
         <Button variant="outline-primary" type="submit" className="w-100 mb-3">
           {t('loginPage.enter')}
