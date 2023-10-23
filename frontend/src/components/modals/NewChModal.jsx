@@ -44,7 +44,7 @@ const NewChannelModal = (props) => {
           onHide();
           notify('add', 'success', t);
         }
-        inputEl.current.removeAttributeAttribute('disabled');
+        inputEl.current.removeAttribute('disabled');
       });
     },
   });
@@ -63,7 +63,7 @@ const NewChannelModal = (props) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <input name="name" ref={inputEl} id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
-          <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.addCh')}</label>
+          <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.channelName')}</label>
           {errors && touched.name
             ? <div className="invalid-feedback">{errors.name}</div>
             : null}

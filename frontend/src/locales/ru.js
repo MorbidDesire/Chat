@@ -35,6 +35,7 @@ export default {
       },
       modals: {
         addCh: 'Добавить канал',
+        nameCh: 'Имя канала',
         cancel: 'Отменить',
         send: 'Отправить',
         delete: 'Удалить',

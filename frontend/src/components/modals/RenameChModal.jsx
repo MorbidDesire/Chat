@@ -59,7 +59,7 @@ const RenameChannelModal = (props) => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <input ref={inputEl} name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
-          <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.addCh')}</label>
+          <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.channelName')}</label>
           {errors && touched.name ? <div className="invalid-feedback">{errors.name}</div> : null}
           <div className="d-flex justify-content-end">
             <button type="button" className="me-2 btn btn-secondary" onClick={onHide}>{t('mainPage.modals.cancel')}</button>
