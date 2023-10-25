@@ -35,11 +35,11 @@ const RenameChannelModal = (props) => {
       inputEl.current.setAttribute('disabled', true);
       socket.timeout(5000).emit('renameChannel', { name, id: channel.id }, (err) => {
         if (err) {
-          notify('rename', 'error', t);
+          notify('error', t);
           console.log(err);
         } else {
           onHide();
-          notify('rename', 'success', t);
+          notify('success', t, 'rename');
         }
         inputEl.current.removeAttribute('disabled');
       });

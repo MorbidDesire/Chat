@@ -17,10 +17,10 @@ const Socket = () => {
     dispatch(addChannel(channel));
   });
   socket.on('renameChannel', (channel) => {
-    dispatch(renameChannel(channel));
+    dispatch(renameChannel({ id: channel.id, changes: channel }));
   });
   socket.on('removeChannel', (data) => {
-    dispatch(removeChannel(data));
+    dispatch(removeChannel(data.id));
   });
 };
 

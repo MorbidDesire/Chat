@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { Dropdown, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
+import { setCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice.js';
 import NewChannelModal from '../modals/NewChModal';
 import RenameChannelModal from '../modals/RenameChModal';
@@ -20,7 +20,7 @@ const Channel = ({
   const dispatch = useDispatch();
   const { id, name, removable } = channel;
   const handleChangeChannel = () => {
-    dispatch(changeCurrentChannel(channel));
+    dispatch(setCurrentChannel({ entities: channel, ids: id }));
   };
   if (!removable) {
     return (

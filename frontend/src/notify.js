@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-export default (action, type, translation) => {
+export default (type, translation, action = null) => {
   if (type === 'error') {
     toast(translation('toastify.error'), { type: 'error' });
     return;

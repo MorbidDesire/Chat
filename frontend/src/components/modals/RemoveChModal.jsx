@@ -10,11 +10,11 @@ const RemoveChannelModal = (props) => {
   const handleRemoveChannel = () => {
     socket.timeout(5000).emit('removeChannel', { id: channel.id }, (err) => {
       if (err) {
-        notify('remove', 'error', t);
+        notify('error', t);
         console.log(err);
       } else {
         onHide();
-        notify('remove', 'success', t);
+        notify('success', t, 'remove');
       }
     });
   };

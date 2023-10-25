@@ -12,13 +12,10 @@ const currentChannelSlice = createSlice({
   initialState,
   reducers: {
     setCurrentChannel: (state, { payload }) => {
+      console.log(payload);
       const { entities, ids } = payload;
       state.entities = entities;
       state.ids = ids;
-    },
-    changeCurrentChannel: (state, { payload }) => {
-      state.entities = payload;
-      state.ids = payload.id;
     },
   },
   extraReducers: (builder) => {
@@ -28,7 +25,7 @@ const currentChannelSlice = createSlice({
         state.ids = payload.id;
       })
       .addCase(removeChannel, (state, { payload }) => {
-        if (state.ids === payload.id) {
+        if (state.ids === payload) {
           const defaultChannel = { name: 'general', id: 1, removable: false };
           state.entities = defaultChannel;
           state.ids = 1;

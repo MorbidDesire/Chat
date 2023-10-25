@@ -14,20 +14,9 @@ const channelsSlice = createSlice({
       state.entities = entities;
       state.ids = ids;
     },
-    addChannel: (state, { payload }) => {
-      const { id } = payload;
-      state.entities[id] = payload;
-      state.ids.push(id.toString());
-    },
-    renameChannel: (state, { payload }) => {
-      const { name, id } = payload;
-      state.entities[id].name = name;
-    },
-    removeChannel: (state, { payload }) => {
-      const id = payload.id.toString();
-      delete state.entities[id];
-      state.ids = state.ids.filter((i) => i !== id);
-    },
+    addChannel: channelsAdapter.addOne,
+    renameChannel: channelsAdapter.updateOne,
+    removeChannel: channelsAdapter.removeOne,
   },
 });
 

@@ -17,7 +17,7 @@ export default {
       usernamePlaceholder: 'Ваш ник',
       passwordPlaceholder: 'Пароль',
       errors: {
-        networkError: 'Ошибка сети',
+        networkError: 'Ошибка соединения',
         authError: 'Неверные имя пользователя или пароль',
       },
     },

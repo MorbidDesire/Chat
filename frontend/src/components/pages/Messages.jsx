@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import useAuth from '../useAuth';
 import { socket } from '../../socket';
@@ -13,6 +13,7 @@ import { currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice';
 import filter from '../../clean';
 import notify from '../../notify';
+import { messageSelectors } from '../../slices/messageSlice';
 
 const MessageBox = ({ channelMessages }) => (
   <div id="messages-box" className="chat-messages overflow-auto px-5 ">
@@ -48,7 +49,7 @@ const MessageForm = ({ currentChannel, t }) => {
       text,
       author: username,
       channelId: currentChannel.id,
-      id: Number(_.uniqueId()),
+      id: _.uniqueId(),
     };
     socket.timeout(5000).emit('newMessage', post, (err) => {
       inputEl.current.setAttribute('disabled', true);
@@ -82,10 +83,9 @@ const MessageForm = ({ currentChannel, t }) => {
 const Messages = () => {
   const { t } = useTranslation('translation');
   const currentChannel = useSelector(currentChannelSelectors.selectEntities);
-  const currentChannelId = currentChannel.id;
+  const currentChannelId = useSelector(currentChannelSelectors.selectIds);
   const channels = useSelector(channelsSelectors.selectEntities);
-
-  const messages = useSelector((state) => Object.values(state.messageReducer.entities), shallowEqual);
+  const messages = useSelector(messageSelectors.selectAll);
   const channelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
   const count = channelMessages.length;
 

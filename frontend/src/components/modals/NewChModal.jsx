@@ -33,12 +33,12 @@ const NewChannelModal = (props) => {
       inputEl.current.setAttribute('disabled', true);
       socket.timeout(5000).emit('newChannel', value, (err) => {
         if (err) {
-          notify('add', 'error', t);
+          notify('error', t);
           console.log(err);
         } else {
           formik.setValues({ name: '' }, false);
           onHide();
-          notify('add', 'success', t);
+          notify('success', t, 'add');
         }
         inputEl.current.removeAttribute('disabled');
       });
