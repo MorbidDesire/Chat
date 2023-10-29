@@ -1,5 +1,6 @@
+/* eslint-disable */
 import { useTranslation } from 'react-i18next';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Dropdown, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
@@ -18,6 +19,7 @@ const Channel = ({
 }) => {
   const currentChannelId = useSelector(currentChannelSelectors.selectIds);
   const dispatch = useDispatch();
+
   const { id, name, removable } = channel;
   const handleChangeChannel = () => {
     dispatch(setCurrentChannel({ entities: channel, ids: id }));
@@ -58,6 +60,15 @@ const Channels = () => {
   const [modalRemoveCh, setModalRemove] = useState(false);
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
+  const channelsBox = useRef(null);
+
+  // useEffect(() => {
+  //   console.log(channelsBox.current.children.length, channels)
+  //   if (!modalNewCh && channels.length !== 0) {
+  //     channelsBox.current.scrollTo(0, channelsBox.current.scrollHeight);
+  //   }
+  // }, [channels]);
+
   const channelNames = channels.map(({ name }) => name);
 
   return (
@@ -75,6 +86,7 @@ const Channels = () => {
           show={modalNewCh}
           onHide={() => setModalNew(false)}
           channelnames={channelNames}
+          ul={channelsBox}
         />
         {modalChannel && (
         <RenameChannelModal
@@ -93,7 +105,7 @@ const Channels = () => {
         />
         )}
       </div>
-      <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+      <ul id="channels-box" ref={channelsBox} className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map((channel) => (
           <Channel
             channel={channel}

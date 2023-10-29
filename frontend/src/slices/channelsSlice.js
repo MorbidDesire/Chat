@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+/* eslint-disable */
+import { createSlice, createEntityAdapter, current } from '@reduxjs/toolkit';
 
 const channelsAdapter = createEntityAdapter();
 
@@ -14,7 +15,11 @@ const channelsSlice = createSlice({
       state.entities = entities;
       state.ids = ids;
     },
-    addChannel: channelsAdapter.addOne,
+    addChannel: (state, { payload }) => {
+      const { channel } = payload;
+      state.entities[channel.id] = channel;
+      state.ids.push(channel.id.toString())
+    },
     renameChannel: channelsAdapter.updateOne,
     removeChannel: channelsAdapter.removeOne,
   },

@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable */
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
@@ -7,18 +8,26 @@ import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { socket } from '../../socket';
 import notify from '../../notify';
+import useAuth from '../useAuth';
 
 const NewChannelModal = (props) => {
+  const { channelnames, onHide, ul } = props;
   const { t } = useTranslation('translation');
-  const { channelnames, onHide } = props;
+  const { username } = useAuth();
   const inputEl = useRef(null);
   useEffect(() => {
     if (inputEl.current) {
       inputEl.current.focus();
     }
   });
+  // useEffect(() => {
+  //   console.log(props);
+  //   if (channelnames.length !== 0) {
+  //     ul.current.scrollTo(0, ul.current.scrollHeight);
+  //   }
+  // }, [channelnames]);
   const channelSchema = yup.object({
-    name: yup.string()
+    name: yup.string().trim()
       .required(t('validation.required'))
       .min(3, t('validation.range'))
       .max(20, t('validation.range'))
@@ -27,6 +36,7 @@ const NewChannelModal = (props) => {
   const formik = useFormik({
     initialValues: {
       name: '',
+      creator: username,
     },
     validationSchema: channelSchema,
     onSubmit: (value) => {

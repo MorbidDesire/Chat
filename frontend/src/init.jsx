@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider, useDispatch } from 'react-redux';
 import { socket } from './socket';
+import useAuth from './components/useAuth';
 import store from './slices/index.js';
 import App from './components/App';
 import resources from './locales/index.js';
@@ -10,11 +11,12 @@ import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice
 
 const Socket = () => {
   const dispatch = useDispatch();
+  const { username } = useAuth();
   socket.on('newMessage', (message) => {
     dispatch(addMessage(message));
   });
   socket.on('newChannel', (channel) => {
-    dispatch(addChannel(channel));
+    dispatch(addChannel({ channel, username }));
   });
   socket.on('renameChannel', (channel) => {
     dispatch(renameChannel({ id: channel.id, changes: channel }));

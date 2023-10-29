@@ -12,7 +12,6 @@ const currentChannelSlice = createSlice({
   initialState,
   reducers: {
     setCurrentChannel: (state, { payload }) => {
-      console.log(payload);
       const { entities, ids } = payload;
       state.entities = entities;
       state.ids = ids;
@@ -21,8 +20,11 @@ const currentChannelSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addChannel, (state, { payload }) => {
-        state.entities = payload;
-        state.ids = payload.id;
+        const { channel, username } = payload;
+        if (channel.creator === username) {
+          state.entities = channel;
+          state.ids = channel.id;
+        }
       })
       .addCase(removeChannel, (state, { payload }) => {
         if (state.ids === payload) {
