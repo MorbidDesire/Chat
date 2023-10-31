@@ -31,7 +31,7 @@ const SignupPage = () => {
 
   const submitForm = async (values, formik) => {
     fieldsetEl.current.setAttribute('disabled', true);
-    await axios.post(routes.signup, values)
+    await axios.post(routes.api.signup, values)
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
