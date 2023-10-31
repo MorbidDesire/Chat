@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth';
 import avatar from '../../assets/signupavatar.jpg';
 import Navigation from '../Navigation';
-import buildRoute from '../../routes';
+import routes from '../../routes';
 
 const SignupPage = () => {
   const { t } = useTranslation('translation');
@@ -31,12 +31,12 @@ const SignupPage = () => {
 
   const submitForm = async (values, formik) => {
     fieldsetEl.current.setAttribute('disabled', true);
-    await axios.post(buildRoute('signup'), values)
+    await axios.post(routes.signup, values)
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         login();
-        navigate('/', { replace: false });
+        navigate(routes.mainPage, { replace: false });
       })
       .catch((error) => {
         if (error.response.status === 409) {

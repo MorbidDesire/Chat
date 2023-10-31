@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Navigation from '../Navigation';
+import routes from '../../routes';
 
 const EmptyPage = () => {
   const { t } = useTranslation('translation');
@@ -12,7 +13,7 @@ const EmptyPage = () => {
         <p className="text-muted">
           {t('emptyPage.pageLink1')}
           {' '}
-          <a href="/">{t('emptyPage.pageLink2')}</a>
+          <a href={routes.mainPage}>{t('emptyPage.pageLink2')}</a>
         </p>
       </div>
     </>

@@ -1,7 +1,8 @@
-/* eslint-disable */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from 'react-i18next';
 import React, { useState, useRef, useEffect } from 'react';
 import { Dropdown, Button } from 'react-bootstrap';
+import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice.js';
@@ -16,8 +17,8 @@ const Channel = ({
   setModalChannel,
   setModalRemove,
   setModalRename,
+  currentChannelId,
 }) => {
-  const currentChannelId = useSelector(currentChannelSelectors.selectIds);
   const dispatch = useDispatch();
 
   const { id, name, removable } = channel;
@@ -61,13 +62,20 @@ const Channels = () => {
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
   const channelsBox = useRef(null);
+  const currentChannelId = useSelector(currentChannelSelectors.selectIds);
+  const lastChannelId = Number(_.last(useSelector(channelsSelectors.selectIds)));
+  const defaultChannelId = Number(_.head(useSelector(channelsSelectors.selectIds)));
 
-  // useEffect(() => {
-  //   console.log(channelsBox.current.children.length, channels)
-  //   if (!modalNewCh && channels.length !== 0) {
-  //     channelsBox.current.scrollTo(0, channelsBox.current.scrollHeight);
-  //   }
-  // }, [channels]);
+  useEffect(() => {
+    if (channelsBox.current.scrollHeight !== channelsBox.current.offsetHeight) {
+      if (currentChannelId === defaultChannelId) {
+        channelsBox.current.scrollTo(0, 0);
+      }
+      if (currentChannelId === lastChannelId) {
+        channelsBox.current.scrollTo(0, channelsBox.current.scrollHeight);
+      }
+    }
+  }, [currentChannelId, lastChannelId]);
 
   const channelNames = channels.map(({ name }) => name);
 
@@ -86,7 +94,6 @@ const Channels = () => {
           show={modalNewCh}
           onHide={() => setModalNew(false)}
           channelnames={channelNames}
-          ul={channelsBox}
         />
         {modalChannel && (
         <RenameChannelModal
@@ -109,6 +116,7 @@ const Channels = () => {
         {channels.map((channel) => (
           <Channel
             channel={channel}
+            currentChannelId={currentChannelId}
             key={channel.id}
             t={t}
             setModalChannel={setModalChannel}

@@ -8,6 +8,7 @@ import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import EmptyPage from './pages/EmptyPage';
 import SignupPage from './pages/SignupPage';
+import routes from '../routes';
 
 const AuthProvider = ({ children }) => {
   const auth = useAuth();
@@ -25,10 +26,10 @@ const App = () => (
     <div className="d-flex flex-column h-100">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="*" element={<EmptyPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path={routes.mainPage} element={<MainPage />} />
+          <Route path={routes.emptyPage} element={<EmptyPage />} />
+          <Route path={routes.loginPage} element={<LoginPage />} />
+          <Route path={routes.signupPage} element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
     </div>

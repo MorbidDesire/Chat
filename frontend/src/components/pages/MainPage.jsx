@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -12,7 +11,7 @@ import useAuth from '../useAuth';
 import Navigation from '../Navigation';
 import Channels from './Channels';
 import Messages from './Messages';
-import buildRoute from '../../routes';
+import routes from '../../routes';
 import notify from '../../notify';
 
 const MainPage = () => {
@@ -34,10 +33,10 @@ const MainPage = () => {
 
   useEffect(() => {
     if (!token) {
-      navigate('/login', { replace: false });
+      navigate(routes.loginPage, { replace: false });
     } else {
       const fetchData = async () => {
-        await axios.get(buildRoute('data'), {
+        await axios.get(routes.api.data, {
           timeout: 1000,
           headers: { Authorization: `Bearer ${token}` },
         }).then(({ data }) => {

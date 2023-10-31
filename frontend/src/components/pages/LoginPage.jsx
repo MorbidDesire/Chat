@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import avatar from '../../assets/avatar.json';
 import useAuth from '../useAuth';
 import Navigation from '../Navigation';
-import buildRoute from '../../routes';
+import routes from '../../routes';
 
 const AuthForm = ({ t }) => {
   const navigate = useNavigate();
@@ -26,12 +26,12 @@ const AuthForm = ({ t }) => {
   });
   const submitForm = async (values, formik) => {
     fieldsetEl.current.setAttribute('disabled', true);
-    await axios.post(buildRoute('login'), values)
+    await axios.post(routes.api.login, values)
       .then(({ data }) => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         login();
-        navigate('/', { replace: false });
+        navigate(routes.mainPage, { replace: false });
       })
       .catch((error) => {
         switch (error.name) {
@@ -100,7 +100,7 @@ const Container = () => {
                   {t('loginPage.noAcc')}
                   {' '}
                 </span>
-                <a href="/signup">{t('loginPage.reg')}</a>
+                <a href={routes.signupPage}>{t('loginPage.reg')}</a>
               </div>
             </div>
           </div>

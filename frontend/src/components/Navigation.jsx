@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import useAuth from './useAuth';
+import routes from '../routes';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const Navigation = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login', { replace: false });
+    navigate(routes.loginPage, { replace: false });
   };
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
