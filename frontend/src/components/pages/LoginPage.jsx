@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import * as yup from 'yup';
+import cn from 'classnames';
 import avatar from '../../assets/avatar.json';
 import useAuth from '../useAuth';
 import Navigation from '../Navigation';
@@ -60,16 +61,22 @@ const AuthForm = ({ t }) => {
   });
 
   const { errors, touched } = formik;
+  const usernameClass = cn('form-control', {
+    'is-invalid': touched.username && (errors.username || errors.authorization),
+  });
+  const passwordClass = cn('form-control', {
+    'is-invalid': touched.password && (errors.password || errors.authorization),
+  });
   return (
     <Form disabled={formik.isSubmitting} onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <fieldset ref={fieldsetEl}>
         <Form.Group className="form-floating mb-3" controlId="username">
-          <input name="username" ref={inputEl} autoComplete="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} id="username" className={`form-control ${touched.username && (errors.username || errors.authorization) ? 'is-invalid' : ''}`} />
+          <input name="username" ref={inputEl} autoComplete="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} id="username" className={usernameClass} />
           <label htmlFor="username" className="form-label">{t('loginPage.username')}</label>
         </Form.Group>
         <Form.Group className="form-floating mb-4" controlId="password">
-          <input name="password" required type="password" autoComplete="current-password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} id="password" className={`form-control ${touched.password && (errors.password || errors.authorization) ? 'is-invalid' : ''}`} />
+          <input name="password" required type="password" autoComplete="current-password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} id="password" className={passwordClass} />
           <label htmlFor="password" className="form-label">{t('loginPage.password')}</label>
           {errors ? <div className="invalid-tooltip">{t('loginPage.errors.authError')}</div> : null}
         </Form.Group>
@@ -90,7 +97,7 @@ const Container = () => {
           <div className="card shadow-sm">
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={avatar} className="rounded-circle" alt="Войти" />
+                <img src={avatar} className="rounded-circle" alt={t('loginPage.enter')} />
               </div>
               <AuthForm t={t} />
             </div>

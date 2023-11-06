@@ -1,15 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useTranslation } from 'react-i18next';
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState, useRef, useEffect, useContext,
+} from 'react';
 import { Dropdown, Button } from 'react-bootstrap';
 import _ from 'lodash';
+import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice.js';
 import NewChannelModal from '../modals/NewChModal';
 import RenameChannelModal from '../modals/RenameChModal';
 import RemoveChannelModal from '../modals/RemoveChModal';
-import filter from '../../clean';
+import FilterContext from '../../FilterContext';
+import chnlBtn from '../../assets/chnlBtn.svg';
 
 const Channel = ({
   channel,
@@ -20,15 +24,22 @@ const Channel = ({
   currentChannelId,
 }) => {
   const dispatch = useDispatch();
+  const dictionary = useContext(FilterContext);
 
   const { id, name, removable } = channel;
   const handleChangeChannel = () => {
     dispatch(setCurrentChannel({ entities: channel, ids: id }));
   };
+  const btnClass = cn('w-100', 'rounded-0', 'text-start', 'text-truncate', 'btn', {
+    'btn-secondary': id === currentChannelId,
+  });
+  const dropdownClass = cn('flex-grow-0', {
+    'btn-secondary': id === currentChannelId,
+  });
   if (!removable) {
     return (
       <li key={id} className="nav-item w-100">
-        <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start text-truncate btn ${id === currentChannelId ? 'btn-secondary' : ''}`}>
+        <button type="button" onClick={handleChangeChannel} className={btnClass}>
           <span className="me-1">#</span>
           {name}
         </button>
@@ -38,11 +49,11 @@ const Channel = ({
   return (
     <li key={id} className="nav-item w-100">
       <Dropdown role="group" className="d-flex btn-group">
-        <button type="button" onClick={handleChangeChannel} className={`w-100 rounded-0 text-start text-truncate btn ${id === currentChannelId ? 'btn-secondary' : ''}`}>
+        <button type="button" onClick={handleChangeChannel} className={btnClass}>
           <span className="me-1">#</span>
-          {filter(name)}
+          {dictionary.clean(name)}
         </button>
-        <Dropdown.Toggle variant="none" split id="dropdown-basic" aria-expanded="false" className={`flex-grow-0 ${id === currentChannelId ? 'btn-secondary' : ''}`}>
+        <Dropdown.Toggle variant="none" split id="dropdown-basic" aria-expanded="false" className={dropdownClass}>
           <span className="visually-hidden">{t('mainPage.channels.manageCh')}</span>
         </Dropdown.Toggle>
         <Dropdown.Menu>
@@ -78,16 +89,14 @@ const Channels = () => {
   }, [currentChannelId, lastChannelId]);
 
   const channelNames = channels.map(({ name }) => name);
+  const ulClass = cn('nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block');
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('mainPage.channels.header')}</b>
         <button type="button" className="p-0 text-primary btn btn-group-vertical" onClick={() => setModalNew(true)}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
-            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-          </svg>
+          <img src={chnlBtn} alt={t('mainPage.channels.add')} />
           <span className="visually-hidden">+</span>
         </button>
         <NewChannelModal
@@ -112,7 +121,7 @@ const Channels = () => {
         />
         )}
       </div>
-      <ul id="channels-box" ref={channelsBox} className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+      <ul id="channels-box" ref={channelsBox} className={ulClass}>
         {channels.map((channel) => (
           <Channel
             channel={channel}

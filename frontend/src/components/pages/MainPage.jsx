@@ -16,7 +16,7 @@ import notify from '../../notify';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const dispatch = useDispatch();
   const { t } = useTranslation('translation');
 
@@ -53,6 +53,8 @@ const MainPage = () => {
         }).catch((error) => {
           notify('error', t);
           console.log(error);
+          logout();
+          navigate(routes.loginPage, { replace: false });
         });
       };
       fetchData();

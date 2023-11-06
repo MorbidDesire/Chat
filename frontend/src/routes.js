@@ -6,7 +6,6 @@ const routes = {
     data: `${baseUrl}/data`,
   },
   mainPage: '/',
-  emptyPage: '/*',
   loginPage: '/login',
   signupPage: '/signup',
 };

@@ -1,23 +1,26 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
+import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { socket } from '../../socket';
 import notify from '../../notify';
-import filter from '../../clean';
+import FilterContext from '../../FilterContext';
 
 const RenameChannelModal = (props) => {
   const inputEl = useRef(null);
+  const dictionary = useContext(FilterContext);
+  const { t } = useTranslation('translation');
+
   useEffect(() => {
     if (inputEl.current) {
       inputEl.current.select();
     }
   }, []);
 
-  const { t } = useTranslation('translation');
   const { onHide, channel, channelnames } = props;
   const channelSchema = yup.object({
     name: yup.string()
@@ -28,7 +31,7 @@ const RenameChannelModal = (props) => {
   });
   const formik = useFormik({
     initialValues: {
-      name: filter(channel.name),
+      name: dictionary.clean(channel.name),
     },
     validationSchema: channelSchema,
     onSubmit: ({ name }) => {
@@ -47,6 +50,9 @@ const RenameChannelModal = (props) => {
   });
 
   const { errors, touched } = formik;
+  const inputClass = cn('form-control', 'mb-2', {
+    'is-invalid': touched.name && errors.name,
+  });
   return (
     <Modal
       {...props}
@@ -59,7 +65,7 @@ const RenameChannelModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <input ref={inputEl} name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={`form-control mb-2 ${touched.name && errors.name ? 'is-invalid' : ''}`} />
+          <input ref={inputEl} name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={inputClass} />
           <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.channelName')}</label>
           {errors && touched.name ? <div className="invalid-feedback">{errors.name}</div> : null}
           <div className="d-flex justify-content-end">

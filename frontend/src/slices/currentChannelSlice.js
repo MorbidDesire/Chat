@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import { addChannel, removeChannel } from './channelsSlice';
+import { removeChannel } from './channelsSlice';
 
 const currentChannelAdapter = createEntityAdapter();
 
@@ -12,6 +12,7 @@ const currentChannelSlice = createSlice({
   initialState,
   reducers: {
     setCurrentChannel: (state, { payload }) => {
+      console.log('SET');
       const { entities, ids } = payload;
       state.entities = entities;
       state.ids = ids;
@@ -19,18 +20,11 @@ const currentChannelSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(addChannel, (state, { payload }) => {
-        const { channel, username } = payload;
-        if (channel.creator === username) {
-          state.entities = channel;
-          state.ids = channel.id;
-        }
-      })
       .addCase(removeChannel, (state, { payload }) => {
         if (state.ids === payload) {
           const defaultChannel = { name: 'general', id: 1, removable: false };
           state.entities = defaultChannel;
-          state.ids = 1;
+          state.ids = defaultChannel.id;
         }
       });
   },

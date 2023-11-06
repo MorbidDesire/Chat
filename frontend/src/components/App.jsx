@@ -27,9 +27,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path={routes.mainPage} element={<MainPage />} />
-          <Route path={routes.emptyPage} element={<EmptyPage />} />
           <Route path={routes.loginPage} element={<LoginPage />} />
           <Route path={routes.signupPage} element={<SignupPage />} />
+          <Route path="*" element={<EmptyPage />} />
         </Routes>
       </BrowserRouter>
     </div>

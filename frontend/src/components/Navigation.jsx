@@ -15,7 +15,7 @@ const Navigation = () => {
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
-        <a className="navbar-brand" href="/">Hexlet Chat</a>
+        <a className="navbar-brand" href={routes.mainPage}>Hexlet Chat</a>
         {token && <button type="button" className="btn btn-primary" onClick={handleLogout}>{t('navigation.logout')}</button>}
       </div>
     </nav>
