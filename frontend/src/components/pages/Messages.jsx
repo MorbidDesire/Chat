@@ -13,7 +13,7 @@ import { socket } from '../../socket';
 import { channelsSelectors } from '../../slices/channelsSlice';
 import notify from '../../notify';
 import { messageSelectors } from '../../slices/messageSlice';
-import FilterContext from '../../FilterContext';
+import FilterContext from '../../filterContext';
 import messageBtn from '../../assets/msgBtn.svg';
 
 const MessageBox = ({ channelMessages }) => {

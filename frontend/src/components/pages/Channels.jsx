@@ -11,7 +11,7 @@ import { setCurrentChannel, channelsSelectors } from '../../slices/channelsSlice
 import NewChannelModal from '../modals/NewChModal';
 import RenameChannelModal from '../modals/RenameChModal';
 import RemoveChannelModal from '../modals/RemoveChModal';
-import FilterContext from '../../FilterContext';
+import FilterContext from '../../filterContext';
 import chnlBtn from '../../assets/chnlBtn.svg';
 
 const Channel = ({
