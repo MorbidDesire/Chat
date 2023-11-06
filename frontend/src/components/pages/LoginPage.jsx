@@ -14,17 +14,20 @@ import routes from '../../routes';
 const AuthForm = ({ t }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const fieldsetEl = useRef(null);
   const inputEl = useRef(null);
+  const fieldsetEl = useRef(null);
+
   useEffect(() => {
     if (inputEl.current) {
       inputEl.current.focus();
     }
   }, []);
+
   const authSchema = yup.object({
     username: yup.string().required(),
     password: yup.string().required(),
   });
+
   const submitForm = async (values, formik) => {
     fieldsetEl.current.setAttribute('disabled', true);
     await axios.post(routes.api.login, values)
@@ -60,7 +63,9 @@ const AuthForm = ({ t }) => {
     },
   });
 
-  const { errors, touched } = formik;
+  const {
+    errors, touched, handleChange, handleSubmit, values,
+  } = formik;
   const usernameClass = cn('form-control', {
     'is-invalid': touched.username && (errors.username || errors.authorization),
   });
@@ -68,15 +73,15 @@ const AuthForm = ({ t }) => {
     'is-invalid': touched.password && (errors.password || errors.authorization),
   });
   return (
-    <Form disabled={formik.isSubmitting} onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+    <Form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
       <h1 className="text-center mb-4">{t('loginPage.enter')}</h1>
       <fieldset ref={fieldsetEl}>
         <Form.Group className="form-floating mb-3" controlId="username">
-          <input name="username" ref={inputEl} autoComplete="username" required onChange={formik.handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={formik.values.username} id="username" className={usernameClass} />
+          <input name="username" ref={inputEl} autoComplete="username" required onChange={handleChange} placeholder={t('loginPage.usernamePlaceholder')} value={values.username} id="username" className={usernameClass} />
           <label htmlFor="username" className="form-label">{t('loginPage.username')}</label>
         </Form.Group>
         <Form.Group className="form-floating mb-4" controlId="password">
-          <input name="password" required type="password" autoComplete="current-password" onChange={formik.handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={formik.values.password} id="password" className={passwordClass} />
+          <input name="password" type="password" autoComplete="current-password" required onChange={handleChange} placeholder={t('loginPage.passwordPlaceholder')} value={values.password} id="password" className={passwordClass} />
           <label htmlFor="password" className="form-label">{t('loginPage.password')}</label>
           {errors ? <div className="invalid-tooltip">{t('loginPage.errors.authError')}</div> : null}
         </Form.Group>

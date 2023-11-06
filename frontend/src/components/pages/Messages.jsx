@@ -10,7 +10,6 @@ import _ from 'lodash';
 import cn from 'classnames';
 import useAuth from '../useAuth';
 import { socket } from '../../socket';
-// import { currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice';
 import notify from '../../notify';
 import { messageSelectors } from '../../slices/messageSlice';
@@ -61,7 +60,6 @@ const MessageForm = ({ currentChannel, t }) => {
       id: _.uniqueId(),
     };
     socket.timeout(5000).emit('newMessage', post, (err) => {
-      inputEl.current.setAttribute('disabled', true);
       if (err) {
         notify('add', 'error', t);
         console.log(err);
@@ -93,8 +91,8 @@ const Messages = () => {
   const dictionary = useContext(FilterContext);
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectEntities);
-  const { currentChannel } = channels;
   const messages = useSelector(messageSelectors.selectAll);
+  const { currentChannel } = channels;
   const channelMessages = messages.filter(({ channelId }) => channelId === currentChannel.id);
   const count = channelMessages.length;
 

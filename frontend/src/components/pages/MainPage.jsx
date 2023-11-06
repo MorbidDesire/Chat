@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -22,7 +21,6 @@ const MainPage = () => {
 
   const getNormalized = (data) => {
     const channel = new schema.Entity('channels');
-
     const message = new schema.Entity('messages');
 
     const normalizedChannels = normalize(data.channels, [channel]);

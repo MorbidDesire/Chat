@@ -24,8 +24,8 @@ const Channel = ({
 }) => {
   const dispatch = useDispatch();
   const dictionary = useContext(FilterContext);
-
   const { id, name, removable } = channel;
+
   const handleChangeChannel = () => {
     dispatch(setCurrentChannel(channel));
   };

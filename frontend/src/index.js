@@ -4,7 +4,7 @@ import { Provider, ErrorBoundary } from '@rollbar/react';
 import filter from 'leo-profanity';
 import ReactDOM from 'react-dom/client';
 import init from './init.jsx';
-import FilterContext from './FilterContext.js';
+import FilterContext from './filterContext.js';
 
 const FilterProvider = ({ children }) => {
   const dictionary = filter.add(filter.getDictionary('ru'));

@@ -58,7 +58,9 @@ const SignupForm = ({ t }) => {
       submitForm(values, formik);
     },
   });
-  const { errors, touched } = formik;
+  const {
+    errors, touched, handleSubmit, values, handleChange, handleBlur,
+  } = formik;
   const usernameClass = cn('form-control', {
     'is-invalid': touched.username && (errors.username || errors.signup),
   });
@@ -69,21 +71,21 @@ const SignupForm = ({ t }) => {
     'is-invalid': touched.confirmPassword && (errors.confirmPassword || errors.signup),
   });
   return (
-    <Form onSubmit={formik.handleSubmit} className="w-50">
+    <Form onSubmit={handleSubmit} className="w-50">
       <fieldset ref={fieldsetEl}>
         <h1 className="text-center mb-4">{t('signupPage.header')}</h1>
         <div className="form-floating mb-3">
-          <input placeholder={t('validation.range')} value={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur} label="username" name="username" autoComplete="username" required="" id="username" className={usernameClass} />
+          <input placeholder={t('validation.range')} value={values.username} onChange={handleChange} onBlur={handleBlur} label="username" name="username" autoComplete="username" required="" id="username" className={usernameClass} />
           <label className="form-label" htmlFor="username">{t('signupPage.username')}</label>
           {errors.username && touched.username ? <div className="invalid-tooltip">{errors.username}</div> : null}
         </div>
         <div className="form-floating mb-3">
-          <input placeholder={t('validation.minCount')} value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className={passwordClass} />
+          <input placeholder={t('validation.minCount')} value={values.password} onChange={handleChange} onBlur={handleBlur} name="password" aria-describedby="passwordHelpBlock" required="" autoComplete="new-password" type="password" id="password" className={passwordClass} />
           <label className="form-label" htmlFor="password">{t('signupPage.password')}</label>
           {errors.password && touched.password ? <div className="invalid-tooltip">{errors.password}</div> : null}
         </div>
         <div className="form-floating mb-4">
-          <input placeholder={t('validation.samePasswords')} value={formik.values.confirmPassword} onChange={formik.handleChange} onBlur={formik.handleBlur} name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className={passConfClass} />
+          <input placeholder={t('validation.samePasswords')} value={values.confirmPassword} onChange={handleChange} onBlur={handleBlur} name="confirmPassword" required="" autoComplete="new-password" type="password" id="confirmPassword" className={passConfClass} />
           <label className="form-label" htmlFor="confirmPassword">{t('signupPage.passwordConfirmation')}</label>
           {errors.confirmPassword && touched.confirmPassword ? <div className="invalid-tooltip">{errors.confirmPassword}</div> : null}
           {errors.signup ? <div className="invalid-tooltip">{t('validation.uniqueUser')}</div> : null}
