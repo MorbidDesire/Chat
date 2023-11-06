@@ -1,12 +1,12 @@
+/* eslint-disable */
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { normalize, schema } from 'normalizr';
 import axios from 'axios';
-import { setChannels } from '../../slices/channelsSlice';
+import { setChannels, setCurrentChannel } from '../../slices/channelsSlice';
 import { setMessages } from '../../slices/messageSlice';
-import { setCurrentChannel } from '../../slices/currentChannelSlice';
 import useAuth from '../useAuth';
 import Navigation from '../Navigation';
 import Channels from './Channels';
@@ -48,7 +48,7 @@ const MainPage = () => {
             ? {} : normalizedMessages.entities.messages;
 
           dispatch(setChannels({ entities: channels, ids: Object.keys(channels) }));
-          dispatch(setCurrentChannel({ entities: currentChannel, ids: currentChannel.id }));
+          dispatch(setCurrentChannel(currentChannel));
           dispatch(setMessages({ entities: messages, ids: Object.keys(messages) }));
         }).catch((error) => {
           notify('error', t);

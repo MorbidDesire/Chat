@@ -15,12 +15,28 @@ const channelsSlice = createSlice({
       state.ids = ids;
     },
     addChannel: (state, { payload }) => {
-      console.log('ADD');
       state.entities[payload.id] = payload;
       state.ids.push(payload.id);
     },
-    renameChannel: channelsAdapter.updateOne,
-    removeChannel: channelsAdapter.removeOne,
+    renameChannel: (state, { payload }) => {
+      channelsAdapter.updateOne(state, payload);
+      const { id, changes } = payload;
+      const { currentChannel } = state.entities;
+      if (currentChannel.id === id) {
+        state.entities.currentChannel.name = changes.name;
+      }
+    },
+    removeChannel: (state, { payload }) => {
+      channelsAdapter.removeOne(state, payload);
+      const { currentChannel } = state.entities;
+      const defaultChannel = { name: 'general', id: 1, removable: false };
+      if (currentChannel.id === payload) {
+        state.entities.currentChannel = defaultChannel;
+      }
+    },
+    setCurrentChannel: (state, { payload }) => {
+      state.entities.currentChannel = payload;
+    },
   },
 });
 
@@ -29,6 +45,7 @@ export const {
   addChannel,
   renameChannel,
   removeChannel,
+  setCurrentChannel,
 } = channelsSlice.actions;
 export const channelsSelectors = channelsAdapter.getSelectors((state) => state.channelsReducer);
 export default channelsSlice.reducer;

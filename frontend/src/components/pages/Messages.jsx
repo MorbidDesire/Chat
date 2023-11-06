@@ -10,7 +10,7 @@ import _ from 'lodash';
 import cn from 'classnames';
 import useAuth from '../useAuth';
 import { socket } from '../../socket';
-import { currentChannelSelectors } from '../../slices/currentChannelSlice';
+// import { currentChannelSelectors } from '../../slices/currentChannelSlice';
 import { channelsSelectors } from '../../slices/channelsSlice';
 import notify from '../../notify';
 import { messageSelectors } from '../../slices/messageSlice';
@@ -92,11 +92,10 @@ const MessageForm = ({ currentChannel, t }) => {
 const Messages = () => {
   const dictionary = useContext(FilterContext);
   const { t } = useTranslation('translation');
-  const currentChannel = useSelector(currentChannelSelectors.selectEntities);
-  const currentChannelId = useSelector(currentChannelSelectors.selectIds);
   const channels = useSelector(channelsSelectors.selectEntities);
+  const { currentChannel } = channels;
   const messages = useSelector(messageSelectors.selectAll);
-  const channelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
+  const channelMessages = messages.filter(({ channelId }) => channelId === currentChannel.id);
   const count = channelMessages.length;
 
   return (
@@ -107,7 +106,7 @@ const Messages = () => {
           <p className="m-0">
             <b>
               #
-              {dictionary.clean(channels[currentChannelId].name)}
+              {dictionary.clean(currentChannel.name)}
             </b>
           </p>
           )}

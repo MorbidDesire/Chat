@@ -35,7 +35,6 @@ const RenameChannelModal = (props) => {
     },
     validationSchema: channelSchema,
     onSubmit: ({ name }) => {
-      inputEl.current.setAttribute('disabled', true);
       socket.timeout(5000).emit('renameChannel', { name, id: channel.id }, (err) => {
         if (err) {
           notify('error', t);
@@ -44,12 +43,13 @@ const RenameChannelModal = (props) => {
           onHide();
           notify('success', t, 'rename');
         }
-        inputEl.current.removeAttribute('disabled');
       });
     },
   });
 
-  const { errors, touched } = formik;
+  const {
+    errors, touched, handleSubmit, isSubmitting, handleChange, values,
+  } = formik;
   const inputClass = cn('form-control', 'mb-2', {
     'is-invalid': touched.name && errors.name,
   });
@@ -64,14 +64,16 @@ const RenameChannelModal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={formik.handleSubmit}>
-          <input ref={inputEl} name="name" id="name" type="text" required onChange={formik.handleChange} value={formik.values.name} className={inputClass} />
-          <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.channelName')}</label>
-          {errors && touched.name ? <div className="invalid-feedback">{errors.name}</div> : null}
-          <div className="d-flex justify-content-end">
-            <button type="button" className="me-2 btn btn-secondary" onClick={onHide}>{t('mainPage.modals.cancel')}</button>
-            <button type="submit" className="btn btn-primary">{t('mainPage.modals.send')}</button>
-          </div>
+        <Form onSubmit={handleSubmit}>
+          <fieldset disabled={isSubmitting}>
+            <input ref={inputEl} name="name" id="name" type="text" required onChange={handleChange} value={values.name} className={inputClass} />
+            <label className="visually-hidden" htmlFor="name">{t('mainPage.modals.channelName')}</label>
+            {errors && touched.name ? <div className="invalid-feedback">{errors.name}</div> : null}
+            <div className="d-flex justify-content-end">
+              <button type="button" className="me-2 btn btn-secondary" onClick={onHide}>{t('mainPage.modals.cancel')}</button>
+              <button type="submit" className="btn btn-primary">{t('mainPage.modals.send')}</button>
+            </div>
+          </fieldset>
         </Form>
       </Modal.Body>
     </Modal>

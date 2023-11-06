@@ -7,8 +7,7 @@ import { Dropdown, Button } from 'react-bootstrap';
 import _ from 'lodash';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentChannel, currentChannelSelectors } from '../../slices/currentChannelSlice';
-import { channelsSelectors } from '../../slices/channelsSlice.js';
+import { setCurrentChannel, channelsSelectors } from '../../slices/channelsSlice.js';
 import NewChannelModal from '../modals/NewChModal';
 import RenameChannelModal from '../modals/RenameChModal';
 import RemoveChannelModal from '../modals/RemoveChModal';
@@ -28,7 +27,7 @@ const Channel = ({
 
   const { id, name, removable } = channel;
   const handleChangeChannel = () => {
-    dispatch(setCurrentChannel({ entities: channel, ids: id }));
+    dispatch(setCurrentChannel(channel));
   };
   const btnClass = cn('w-100', 'rounded-0', 'text-start', 'text-truncate', 'btn', {
     'btn-secondary': id === currentChannelId,
@@ -72,21 +71,21 @@ const Channels = () => {
   const [modalRemoveCh, setModalRemove] = useState(false);
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
+  const { currentChannel } = useSelector(channelsSelectors.selectEntities);
   const channelsBox = useRef(null);
-  const currentChannelId = useSelector(currentChannelSelectors.selectIds);
   const lastChannelId = Number(_.last(useSelector(channelsSelectors.selectIds)));
   const defaultChannelId = Number(_.head(useSelector(channelsSelectors.selectIds)));
 
   useEffect(() => {
     if (channelsBox.current.scrollHeight !== channelsBox.current.offsetHeight) {
-      if (currentChannelId === defaultChannelId) {
+      if (currentChannel.id === defaultChannelId) {
         channelsBox.current.scrollTo(0, 0);
       }
-      if (currentChannelId === lastChannelId) {
+      if (currentChannel.id === lastChannelId) {
         channelsBox.current.scrollTo(0, channelsBox.current.scrollHeight);
       }
     }
-  }, [currentChannelId, lastChannelId]);
+  }, [currentChannel, lastChannelId]);
 
   const channelNames = channels.map(({ name }) => name);
   const ulClass = cn('nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block');
@@ -125,7 +124,7 @@ const Channels = () => {
         {channels.map((channel) => (
           <Channel
             channel={channel}
-            currentChannelId={currentChannelId}
+            currentChannelId={currentChannel.id}
             key={channel.id}
             t={t}
             setModalChannel={setModalChannel}
