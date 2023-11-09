@@ -1,7 +1,6 @@
-/* eslint-disable */
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import React from 'react';
 import store from './slices/index.js';
 import App from './components/App';
