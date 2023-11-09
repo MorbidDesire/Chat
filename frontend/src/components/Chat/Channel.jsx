@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import cn from 'classnames';
 import { setCurrentChannel } from '../../slices/channelsSlice.js';
-import FilterContext from '../../filterContext.js';
+import { FilterContext } from '../../context/index.js';
 
 const Channel = ({
   channel,

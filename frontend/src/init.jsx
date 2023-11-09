@@ -8,6 +8,8 @@ import App from './components/App';
 import resources from './locales/index.js';
 import { addMessage } from './slices/messageSlice.js';
 import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice.js';
+import FilterProvider from './context/FilterProvider';
+import AuthProvider from './context/AuthProvider';
 
 const Socket = () => {
   const dispatch = useDispatch();
@@ -34,12 +36,16 @@ const init = async () => {
       fallbackLng: 'ru',
     });
   return (
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <Socket />
-        <App />
-      </Provider>
-    </I18nextProvider>
+    <AuthProvider>
+      <FilterProvider>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            <Socket />
+            <App />
+          </Provider>
+        </I18nextProvider>
+      </FilterProvider>
+    </AuthProvider>
   );
 };
 

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import { channelsSelectors } from '../../slices/channelsSlice';
 import { messageSelectors } from '../../slices/messageSlice';
-import FilterContext from '../../filterContext';
+import { FilterContext } from '../../context/index.js';
 import MessageBox from './MessageBox';
 import MessageForm from './MessageForm';
 

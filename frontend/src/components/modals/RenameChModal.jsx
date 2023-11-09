@@ -8,7 +8,7 @@ import { useFormik } from 'formik';
 import React, { useRef, useEffect, useContext } from 'react';
 import { socket } from '../../socket';
 import notify from '../../notify';
-import FilterContext from '../../filterContext';
+import { FilterContext } from '../../context/index.js';
 
 const RenameChannelModal = (props) => {
   const inputEl = useRef(null);

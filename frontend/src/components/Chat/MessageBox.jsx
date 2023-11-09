@@ -3,7 +3,7 @@ import React, {
   useRef,
   useContext,
 } from 'react';
-import FilterContext from '../../filterContext';
+import { FilterContext } from '../../context/index.js';
 
 const MessageBox = ({ channelMessages }) => {
   const dictionary = useContext(FilterContext);
