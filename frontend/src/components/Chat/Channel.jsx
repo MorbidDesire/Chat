@@ -18,7 +18,7 @@ const Channel = ({
   const { id, name, removable } = channel;
 
   const handleChangeChannel = () => {
-    dispatch(setCurrentChannel(channel));
+    dispatch(setCurrentChannel(id));
   };
   const btnClass = cn('w-100', 'rounded-0', 'text-start', 'text-truncate', 'btn', {
     'btn-secondary': id === currentChannelId,

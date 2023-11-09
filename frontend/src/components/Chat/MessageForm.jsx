@@ -11,7 +11,7 @@ import { SocketContext } from '../../context/index';
 import messageBtn from '../../assets/msgBtn.svg';
 import notify from '../../notify';
 
-const MessageForm = ({ currentChannel, t }) => {
+const MessageForm = ({ currentChannelId, t }) => {
   const socket = useContext(SocketContext);
   const [text, setText] = useState('');
   const { username } = useAuth();
@@ -20,7 +20,7 @@ const MessageForm = ({ currentChannel, t }) => {
     if (inputEl.current) {
       inputEl.current.focus();
     }
-  }, [currentChannel]);
+  }, [currentChannelId]);
 
   const handleChange = ({ target }) => {
     setText(target.value);
@@ -32,7 +32,7 @@ const MessageForm = ({ currentChannel, t }) => {
     const post = {
       text,
       author: username,
-      channelId: currentChannel.id,
+      channelId: currentChannelId,
       id: _.uniqueId(),
     };
     socket.timeout(5000).emit('newMessage', post, (err) => {

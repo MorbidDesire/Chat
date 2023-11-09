@@ -17,11 +17,13 @@ const NewChannelModal = (props) => {
   const inputEl = useRef(null);
   const dispatch = useDispatch();
   const { channelnames, onHide } = props;
+
   useEffect(() => {
     if (inputEl.current) {
       inputEl.current.focus();
     }
   });
+
   const channelSchema = yup.object({
     name: yup.string().trim()
       .required(t('validation.required'))
@@ -37,7 +39,7 @@ const NewChannelModal = (props) => {
     onSubmit: async (value) => {
       try {
         const { data } = await socket.timeout(5000).emitWithAck('newChannel', value);
-        dispatch(setCurrentChannel(data));
+        dispatch(setCurrentChannel(data.id));
         formik.setValues({ name: '' }, false);
         onHide();
         notify('success', t, 'add');

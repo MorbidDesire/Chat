@@ -41,12 +41,11 @@ const MainPage = () => {
           const { normalizedChannels, normalizedMessages } = getNormalized(data);
           const { currentChannelId } = data;
           const { channels } = normalizedChannels.entities;
-          const currentChannel = Object.values(channels).find(({ id }) => id === currentChannelId);
           const messages = !Object.keys(normalizedMessages.entities).length
             ? {} : normalizedMessages.entities.messages;
 
           dispatch(setChannels({ entities: channels, ids: Object.keys(channels) }));
-          dispatch(setCurrentChannel(currentChannel));
+          dispatch(setCurrentChannel({ id: currentChannelId, defaultChannelId: currentChannelId }));
           dispatch(setMessages({ entities: messages, ids: Object.keys(messages) }));
         }).catch((error) => {
           notify('error', t);

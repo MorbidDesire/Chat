@@ -14,28 +14,23 @@ const channelsSlice = createSlice({
       state.entities = entities;
       state.ids = ids;
     },
-    addChannel: (state, { payload }) => {
-      state.entities[payload.id] = payload;
-      state.ids.push(payload.id);
-    },
-    renameChannel: (state, { payload }) => {
-      channelsAdapter.updateOne(state, payload);
-      const { id, changes } = payload;
-      const { currentChannel } = state.entities;
-      if (currentChannel.id === id) {
-        state.entities.currentChannel.name = changes.name;
-      }
-    },
+    addChannel: channelsAdapter.addOne,
+    renameChannel: channelsAdapter.updateOne,
     removeChannel: (state, { payload }) => {
       channelsAdapter.removeOne(state, payload);
-      const { currentChannel } = state.entities;
-      const defaultChannel = { name: 'general', id: 1, removable: false };
-      if (currentChannel.id === payload) {
-        state.entities.currentChannel = defaultChannel;
+      const { defaultChannelId, currentChannelId } = state.entities;
+      if (currentChannelId === payload) {
+        state.entities.currentChannelId = defaultChannelId;
       }
     },
     setCurrentChannel: (state, { payload }) => {
-      state.entities.currentChannel = payload;
+      if (payload.defaultChannelId) {
+        const { id, defaultChannelId } = payload;
+        state.entities.currentChannelId = id;
+        state.entities.defaultChannelId = defaultChannelId;
+      } else {
+        state.entities.currentChannelId = payload;
+      }
     },
   },
 });

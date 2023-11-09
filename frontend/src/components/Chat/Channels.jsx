@@ -20,21 +20,21 @@ const Channels = () => {
   const [modalRemoveCh, setModalRemove] = useState(false);
   const { t } = useTranslation('translation');
   const channels = useSelector(channelsSelectors.selectAll);
-  const { currentChannel } = useSelector(channelsSelectors.selectEntities);
+  const { currentChannelId } = useSelector(channelsSelectors.selectEntities);
   const channelsBox = useRef(null);
   const lastChannelId = Number(_.last(useSelector(channelsSelectors.selectIds)));
   const defaultChannelId = Number(_.head(useSelector(channelsSelectors.selectIds)));
 
   useEffect(() => {
     if (channelsBox.current.scrollHeight !== channelsBox.current.offsetHeight) {
-      if (currentChannel.id === defaultChannelId) {
+      if (currentChannelId === defaultChannelId) {
         channelsBox.current.scrollTo(0, 0);
       }
-      if (currentChannel.id === lastChannelId) {
+      if (currentChannelId === lastChannelId) {
         channelsBox.current.scrollTo(0, channelsBox.current.scrollHeight);
       }
     }
-  }, [currentChannel, lastChannelId]);
+  }, [currentChannelId, lastChannelId]);
 
   const channelNames = channels.map(({ name }) => name);
   const ulClass = cn('nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block');
@@ -73,7 +73,7 @@ const Channels = () => {
         {channels.map((channel) => (
           <Channel
             channel={channel}
-            currentChannelId={currentChannel.id}
+            currentChannelId={currentChannelId}
             key={channel.id}
             t={t}
             setModalChannel={setModalChannel}
