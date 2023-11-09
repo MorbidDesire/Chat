@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import React from 'react';
-import useAuth from './useAuth';
+import useAuth from '../useAuth';
 import MainPage from './pages/MainPage';
 import LoginPage from './pages/LoginPage';
 import EmptyPage from './pages/EmptyPage';

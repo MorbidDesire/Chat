@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import useAuth from './useAuth';
+import useAuth from '../useAuth';
 import routes from '../routes';
 
 const Navigation = () => {

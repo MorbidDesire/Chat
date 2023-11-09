@@ -6,10 +6,10 @@ import { normalize, schema } from 'normalizr';
 import axios from 'axios';
 import { setChannels, setCurrentChannel } from '../../slices/channelsSlice';
 import { setMessages } from '../../slices/messageSlice';
-import useAuth from '../useAuth';
+import useAuth from '../../useAuth';
 import Navigation from '../Navigation';
-import Channels from './Channels';
-import Messages from './Messages';
+import Channels from '../Chat/Channels';
+import Messages from '../Chat/Messages';
 import routes from '../../routes';
 import notify from '../../notify';
 
