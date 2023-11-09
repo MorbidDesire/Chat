@@ -4,14 +4,15 @@ import * as yup from 'yup';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { socket } from '../../socket';
+import { SocketContext } from '../../context/index';
 import notify from '../../notify';
 import { setCurrentChannel } from '../../slices/channelsSlice';
 
 const NewChannelModal = (props) => {
+  const socket = useContext(SocketContext);
   const { t } = useTranslation('translation');
   const inputEl = useRef(null);
   const dispatch = useDispatch();

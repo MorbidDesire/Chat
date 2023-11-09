@@ -2,15 +2,17 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useContext,
 } from 'react';
 import _ from 'lodash';
 import cn from 'classnames';
 import useAuth from '../../useAuth';
-import { socket } from '../../socket';
+import { SocketContext } from '../../context/index';
 import messageBtn from '../../assets/msgBtn.svg';
 import notify from '../../notify';
 
 const MessageForm = ({ currentChannel, t }) => {
+  const socket = useContext(SocketContext);
   const [text, setText] = useState('');
   const { username } = useAuth();
   const inputEl = useRef(null);

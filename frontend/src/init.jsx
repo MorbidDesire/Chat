@@ -1,31 +1,14 @@
+/* eslint-disable */
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider, useDispatch } from 'react-redux';
 import React from 'react';
-import { socket } from './socket';
 import store from './slices/index.js';
 import App from './components/App';
 import resources from './locales/index.js';
-import { addMessage } from './slices/messageSlice.js';
-import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice.js';
 import FilterProvider from './context/FilterProvider';
 import AuthProvider from './context/AuthProvider';
-
-const Socket = () => {
-  const dispatch = useDispatch();
-  socket.on('newMessage', (message) => {
-    dispatch(addMessage(message));
-  });
-  socket.on('newChannel', (channel) => {
-    dispatch(addChannel(channel));
-  });
-  socket.on('renameChannel', (channel) => {
-    dispatch(renameChannel({ id: channel.id, changes: channel }));
-  });
-  socket.on('removeChannel', (data) => {
-    dispatch(removeChannel(data.id));
-  });
-};
+import SocketProvider from './context/SocketProvider';
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -36,16 +19,17 @@ const init = async () => {
       fallbackLng: 'ru',
     });
   return (
-    <AuthProvider>
-      <FilterProvider>
-        <I18nextProvider i18n={i18n}>
-          <Provider store={store}>
-            <Socket />
-            <App />
-          </Provider>
-        </I18nextProvider>
-      </FilterProvider>
-    </AuthProvider>
+    <SocketProvider>
+      <AuthProvider>
+        <FilterProvider>
+          <I18nextProvider i18n={i18n}>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </I18nextProvider>
+        </FilterProvider>
+      </AuthProvider>
+    </SocketProvider>
   );
 };
 

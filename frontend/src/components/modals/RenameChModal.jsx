@@ -1,16 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import React, { useRef, useEffect, useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import * as yup from 'yup';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import React, { useRef, useEffect, useContext } from 'react';
-import { socket } from '../../socket';
 import notify from '../../notify';
-import { FilterContext } from '../../context/index.js';
+import { FilterContext, SocketContext } from '../../context/index.js';
 
 const RenameChannelModal = (props) => {
+  const socket = useContext(SocketContext);
   const inputEl = useRef(null);
   const dictionary = useContext(FilterContext);
   const { t } = useTranslation('translation');

@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
-import { socket } from '../../socket';
+import { SocketContext } from '../../context/index';
 import notify from '../../notify';
 
 const RemoveChannelModal = (props) => {
+  const socket = useContext(SocketContext);
   const { t } = useTranslation('translation');
   const { onHide, channel } = props;
   const handleRemoveChannel = () => {
