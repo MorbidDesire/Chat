@@ -8,8 +8,8 @@ import { setChannels, setCurrentChannel } from '../../slices/channelsSlice';
 import { setMessages } from '../../slices/messageSlice';
 import useAuth from '../../useAuth';
 import Navigation from '../Navigation';
-import Channels from '../Chat/Channels';
-import Messages from '../Chat/Messages';
+import Channels from '../chat/Channels';
+import Messages from '../chat/Messages';
 import routes from '../../routes';
 import notify from '../../notify';
 
